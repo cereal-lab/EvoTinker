@@ -6,8 +6,9 @@ from random import random
 from dataclasses import dataclass
 
 
+
+
 class FitnessEvaluator(object):
-    
         
     def __init__(self):
         #pass # if we init fields here, the constructor is run everytime we create a singleton
@@ -39,15 +40,12 @@ class FitnessEvaluator(object):
     def OneMax(self, genotype):
         return sum(genotype)
     
-    ##def __new__(cls):
-    ##    # implements singleton pattern
-    ##    # https://www.geeksforgeeks.org/singleton-pattern-in-python-a-complete-guide/
-    ##    if not hasattr(cls, 'instance'):
-    ##      cls.instance = super(FitnessEvaluator, cls).__new__(cls)
-    ##    return cls.instance
+
 
 
 fitness_evaluator = FitnessEvaluator()
+
+
 
 
 class CandidateSolution(object):
@@ -90,19 +88,6 @@ def mutate(cs, rate=None):
 
 
 
-
-def replace_OLD(pop, cs):
-    smallest = min(pop, key=lambda item: item.fitness)
-    #pop = [x for x in pop if x.fitness > smallest else cs]
-    newpop = []
-    already_replaced = False
-    for i in range(len(pop)):
-        if pop[i].fitness > smallest.fitness or already_replaced:
-            newpop.append(pop[i])
-        else:
-            already_replaced = True
-            newpop.append(cs)
-    return newpop
 
 def replace(pop, cs):
     smallest = min(pop, key=lambda item: item.fitness)
@@ -177,6 +162,8 @@ def evolve(max_iterations, pop_size, kt, geno_size):
     #FitnessEvaluator().zero_cache_usage()
     #print(fitness_evaluator.fitness_cache)
     fitness_evaluator.zero_cache_usage()
+
+
 
 
 if __name__ == '__main__':
