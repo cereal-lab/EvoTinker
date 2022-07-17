@@ -1,51 +1,5 @@
-from random import choice
-from random import sample
-from random  import randint
-from random import random
-
-from dataclasses import dataclass
-
-
-
-
-class FitnessEvaluator(object):
-        
-    def __init__(self):
-        #pass # if we init fields here, the constructor is run everytime we create a singleton
-        self.cache_hits = 0
-        self.cache_misses = 0
-        self.fitness_cache = {}
-            
-    def evaluate(self, genotype):
-        key = tuple(genotype)
-        #print("Evaluating", self.cache_hits, self.cache_misses)
-        if key in self.fitness_cache.keys():
-            self.cache_hits += 1
-            return self.fitness_cache[key]
-        else:
-            self.cache_misses += 1
-            fitness_value = self.OneMax(genotype)
-            self.fitness_cache[key] = fitness_value
-            #print("after", self.fitness_cache)
-            return fitness_value
-    
-    def report_cache_usage(self):
-        return (self.cache_hits , self.cache_misses)
-    
-    def zero_cache_usage(self):
-        self.cache_hits = 0
-        self.cache_misses = 0
-        self.fitness_cache.clear()
-    
-    def OneMax(self, genotype):
-        return sum(genotype)
-    
-
-
-
-fitness_evaluator = FitnessEvaluator()
-
-
+import random
+from FitnessEvaluator import fitness_evaluator
 
 
 class CandidateSolution(object):
@@ -54,7 +8,7 @@ class CandidateSolution(object):
         if genotype is None:
             self.genotype = []
             for _ in range(length):
-                self.genotype.append(randint(0,1))
+                self.genotype.append(random.randint(0,1))
         else:
             self.genotype = genotype
         self.fitness = None
@@ -70,7 +24,7 @@ class CandidateSolution(object):
 
 
 def recombine(p1: CandidateSolution, p2: CandidateSolution):
-    mask = [0 if random() < 0.5 else 1 for _ in range(len(p1.genotype))]
+    mask = [0 if random.random() < 0.5 else 1 for _ in range(len(p1.genotype))]
     os1 = [p1.genotype[i] if mask[i] == 0 else p2.genotype[i]
            for i in range(len(mask))]
     os2 = [p1.genotype[i] if mask[i] == 1 else p2.genotype[i]
@@ -83,8 +37,8 @@ def recombine(p1: CandidateSolution, p2: CandidateSolution):
 def mutate(cs, rate=None):
     if rate is None:
         rate = 1/len(cs)
-        #rate = randint(1,len(cs)//4)/len(cs)
-    return [x if random() >= rate else (1-x) for x in cs ]
+        #rate = random.randint(1,len(cs)//4)/len(cs)
+    return [x if random.random() >= rate else (1-x) for x in cs ]
 
 
 
@@ -102,7 +56,7 @@ def replace(pop, cs):
 
 
 def select(p, kt=2):
-    pool = sample(p,k=kt)
+    pool = random.sample(p,k=kt)
     return max(pool, key=lambda item: item.fitness)
 
 
@@ -115,12 +69,11 @@ def diversify(p: list):
     #    new_cs.evaluate()
     #    pop = replace(pop, new_cs)
     for _ in range(len(p) // 10):
-        new_cs = CandidateSolution(genotype=list(choice(list(fitness_evaluator.fitness_cache))))
+        new_cs = CandidateSolution(genotype=list(random.choice(list(fitness_evaluator.fitness_cache))))
         new_cs.evaluate()
         p = replace(p, new_cs)
     return p
         
-
 
 
 
@@ -168,4 +121,5 @@ def evolve(max_iterations, pop_size, kt, geno_size):
 
 if __name__ == '__main__':
     #evolve(geno_size=100, max_iterations=400, pop_size=25, kt=2)
-    evolve(geno_size=1000, max_iterations=4000, pop_size=25, kt=2)
+    evolve(geno_size=1000, max_iterations=8000, pop_size=25, kt=2)
+    #print(16025 / 2**1000)
