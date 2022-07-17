@@ -122,7 +122,7 @@ def evolve(max_iterations, pop_size, kt, geno_size):
 
 if __name__ == '__main__':
     #evolve(geno_size=100, max_iterations=400, pop_size=25, kt=2)
-    evolve(geno_size=1000, max_iterations=8000, pop_size=25, kt=2)
+    #evolve(geno_size=1000, max_iterations=8000, pop_size=25, kt=2)
+    evolve(geno_size=10000, max_iterations=80000, pop_size=25, kt=5)
     
 
-    
