@@ -63,11 +63,12 @@ def select(p, kt=2):
 
 
 def diversify(p: list):
-    #hypermutation wannabe
+    #random immigrant wannabe below:
     #for _ in range(pop_size // 5):
     #    new_cs = CandidateSolution(geno_size)
     #    new_cs.evaluate()
     #    pop = replace(pop, new_cs)
+    # cached random immigrant below:
     for _ in range(len(p) // 10):
         new_cs = CandidateSolution(genotype=list(random.choice(list(fitness_evaluator.fitness_cache))))
         new_cs.evaluate()
@@ -108,11 +109,11 @@ def evolve(max_iterations, pop_size, kt, geno_size):
 
         best = max(pop, key=lambda item: item.fitness)
         #print(f"Iteration #{iteration}:", best.fitness)
+        if best.fitness >= fitness_evaluator.max_fitness:
+            break
 
-    print("\nBest Candidate Solution:", best.fitness)
-    #print("FitnessCache usage:", FitnessEvaluator().report_cache_usage())
+    print("\nBest Candidate Solution:", best.fitness, "@ iteration #", iteration)
     print("FitnessCache usage:", fitness_evaluator.report_cache_usage())
-    #FitnessEvaluator().zero_cache_usage()
     #print(fitness_evaluator.fitness_cache)
     fitness_evaluator.zero_cache_usage()
 
@@ -122,4 +123,6 @@ def evolve(max_iterations, pop_size, kt, geno_size):
 if __name__ == '__main__':
     #evolve(geno_size=100, max_iterations=400, pop_size=25, kt=2)
     evolve(geno_size=1000, max_iterations=8000, pop_size=25, kt=2)
-    #print(16025 / 2**1000)
+    
+
+    

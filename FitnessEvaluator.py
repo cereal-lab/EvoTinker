@@ -5,6 +5,7 @@ class FitnessEvaluator(object):
         self.cache_hits = 0
         self.cache_misses = 0
         self.fitness_cache = {}
+        self.max_fitness = None
             
     def evaluate(self, genotype):
         key = tuple(genotype)
@@ -28,6 +29,8 @@ class FitnessEvaluator(object):
         self.fitness_cache.clear()
     
     def OneMax(self, genotype):
+        if self.max_fitness is None:
+            self.max_fitness = len(genotype)
         return sum(genotype)
     
 
