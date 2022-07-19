@@ -23,14 +23,16 @@ class CandidateSolution(object):
 
 
 
-def recombine(p1: CandidateSolution, p2: CandidateSolution):
-    mask = [0 if random.random() < 0.5 else 1 for _ in range(len(p1.genotype))]
-    os1 = [p1.genotype[i] if mask[i] == 0 else p2.genotype[i]
-           for i in range(len(mask))]
-    os2 = [p1.genotype[i] if mask[i] == 1 else p2.genotype[i]
-           for i in range(len(mask))]
-    return os1,os2
-
+def recombine(p1: CandidateSolution, p2: CandidateSolution, rate=None):
+    if rate is not None and random.random() < rate:
+            mask = [0 if random.random() < 0.5 else 1 for _ in range(len(p1.genotype))]
+            os1 = [p1.genotype[i] if mask[i] == 0 else p2.genotype[i]
+                for i in range(len(mask))]
+            os2 = [p1.genotype[i] if mask[i] == 1 else p2.genotype[i]
+                for i in range(len(mask))]
+            return os1,os2
+    else:
+        return p1.genotype, p2.genotype
 
 
 
@@ -38,7 +40,7 @@ def mutate(cs, rate=None):
     if rate is None:
         rate = 1/len(cs)
         #rate = random.randint(1,len(cs)//4)/len(cs)
-    return [x if random.random() >= rate else (1-x) for x in cs ]
+    return [ (1-x) if random.random() < rate else x for x in cs ]
 
 
 
@@ -63,11 +65,18 @@ def select(p, kt=2):
 
 
 def diversify(p: list):
+    return diversify_cached_random_immigrant(p)
+    #return diversify_random_immigrant(p)
+    
+def diversify_random_immigrant(p: list):
     #random immigrant wannabe below:
-    #for _ in range(pop_size // 5):
-    #    new_cs = CandidateSolution(geno_size)
-    #    new_cs.evaluate()
-    #    pop = replace(pop, new_cs)
+    for _ in range(len(p) // 5):
+        new_cs = CandidateSolution(len(p[0].genotype))
+        new_cs.evaluate()
+        pop = replace(pop, new_cs)
+    return p
+    
+def diversify_cached_random_immigrant(p: list):
     # cached random immigrant below:
     for _ in range(len(p) // 10):
         new_cs = CandidateSolution(genotype=list(random.choice(list(fitness_evaluator.fitness_cache))))
@@ -78,7 +87,7 @@ def diversify(p: list):
 
 
 
-def evolve(max_iterations, pop_size, kt, geno_size):
+def evolve(max_iterations, pop_size, kt, geno_size, mutation_rate=None, crossover_rate=None):
     pop = []
     for _ in range(pop_size):
         pop.append(CandidateSolution(geno_size))
@@ -92,10 +101,10 @@ def evolve(max_iterations, pop_size, kt, geno_size):
         p1 = select(pop, kt)
         p2 = select(pop, kt)
 
-        os1, os2 = recombine(p1,p2)
+        os1, os2 = recombine(p1,p2, rate=crossover_rate)
 
-        os1 = mutate(os1)
-        os2 = mutate(os2)
+        os1 = mutate(os1, rate=mutation_rate)
+        os2 = mutate(os2, rate=mutation_rate)
 
         cs1 = CandidateSolution(genotype=os1)
         cs2 = CandidateSolution(genotype=os2)
@@ -122,7 +131,7 @@ def evolve(max_iterations, pop_size, kt, geno_size):
 
 if __name__ == '__main__':
     #evolve(geno_size=100, max_iterations=400, pop_size=25, kt=2)
-    #evolve(geno_size=1000, max_iterations=8000, pop_size=25, kt=2)
-    evolve(geno_size=10000, max_iterations=80000, pop_size=25, kt=5)
+    evolve(geno_size=1000, max_iterations=8000, pop_size=25, kt=2, crossover_rate=0.8)
+    #evolve(geno_size=10000, max_iterations=80000, pop_size=25, kt=5)
     
 

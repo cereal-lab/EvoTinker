@@ -36,4 +36,12 @@ class FitnessEvaluator(object):
 
 
 
+    def ZeroMax(self, genotype):
+        if self.max_fitness is None:
+            self.max_fitness = len(genotype)
+        return len(genotype) - sum(genotype)
+    
+
+
+
 fitness_evaluator = FitnessEvaluator()
