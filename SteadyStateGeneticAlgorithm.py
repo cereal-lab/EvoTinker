@@ -122,9 +122,7 @@ def evolve(max_iterations, pop_size, kt, geno_size, mutation_rate=None, crossove
         if best.fitness >= fitness_evaluator.max_fitness:
             break
 
-    print("\nBest Candidate Solution:", best.fitness, "@ iteration #", iteration)
     cache_usage = fitness_evaluator.report_cache_usage()
-    print("FitnessCache usage:", cache_usage)
     #print(fitness_evaluator.fitness_cache)
     fitness_evaluator.zero_cache_usage()
     return (best.fitness, iteration) + cache_usage
