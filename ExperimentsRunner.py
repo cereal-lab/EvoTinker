@@ -20,7 +20,7 @@ if __name__ == '__main__':
     for i in range(number_of_trials):
         #result = evolve(geno_size=100, max_iterations=400, pop_size=25, kt=2, crossover_rate=0.8, fitness_evaluator=fitness_evaluator)
         #result = evolve(geno_size=1000, max_iterations=8000, pop_size=25, kt=2, crossover_rate=0.8, fitness_evaluator=fitness_evaluator)
-        result1 = evolve(    geno_size=1000, 
+        result1 = evolve(   geno_size=1000, 
                             max_iterations=10_000, 
                             pop_size=25, 
                             kt=2, 
@@ -30,11 +30,10 @@ if __name__ == '__main__':
                             max_iterations=10_000, 
                             pop_size=25, 
                             kt=2, 
-                            mutation_rate=0.001, 
-                            crossover_rate=0.8, 
+                            crossover_rate=1.0, 
                             fitness_evaluator=fitness_evaluator)
         #result = evolve(geno_size=10000, max_iterations=80000, pop_size=25, kt=5, crossover_rate=0.8, fitness_evaluator=fitness_evaluator)
-        print(f"Run #{i}",result1,result2)
+        print(f"Run #{i}\t{result1}\t{result2}")
         results1.append(result1)
         results2.append(result2)
 
