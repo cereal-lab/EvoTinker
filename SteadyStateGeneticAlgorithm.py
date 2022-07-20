@@ -128,7 +128,6 @@ def evolve(max_iterations, pop_size, kt, geno_size, mutation_rate=None, crossove
         pop = replace(pop, cs2)
 
         best = max(pop, key=lambda item: item.fitness)
-        #print(f"Iteration #{iteration}:", best.fitness)
         if best.fitness >= fitness_evaluator.max_fitness:
             break
 
