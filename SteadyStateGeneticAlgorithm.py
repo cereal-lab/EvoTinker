@@ -1,10 +1,14 @@
 import random
-from FitnessEvaluator import fitness_evaluator
+from FitnessEvaluator import FitnessEvaluator
+
+
 
 
 class CandidateSolution(object):
     
-    def __init__(self, length=None, genotype=None):
+    def __init__(self, length=None, genotype=None, fitness_evaluator=None):
+        self.fitness_evaluator = fitness_evaluator
+
         if genotype is None:
             self.genotype = []
             for _ in range(length):
@@ -15,7 +19,7 @@ class CandidateSolution(object):
         
     def evaluate(self):
         #self.fitness = FitnessEvaluator().evaluate(self.genotype)
-        self.fitness = fitness_evaluator.evaluate(self.genotype)
+        self.fitness = self.fitness_evaluator.evaluate(self.genotype)
     
     def __repr__(self):
         return f"<{self.genotype}>"
@@ -63,23 +67,19 @@ def select(p, kt=2):
 
 
 
-
-def diversify(p: list):
-    return diversify_cached_random_immigrant(p)
-    #return diversify_random_immigrant(p)
     
-def diversify_random_immigrant(p: list):
+def diversify_random_immigrant(p: list, fitness_evaluator: FitnessEvaluator):
     #random immigrant wannabe below:
     for _ in range(len(p) // 5):
-        new_cs = CandidateSolution(len(p[0].genotype))
+        new_cs = CandidateSolution(len(p[0].genotype), fitness_evaluator=fitness_evaluator)
         new_cs.evaluate()
         pop = replace(pop, new_cs)
     return p
     
-def diversify_cached_random_immigrant(p: list):
+def diversify_cached_random_immigrant(p: list, fitness_evaluator: FitnessEvaluator):
     # cached random immigrant below:
     for _ in range(len(p) // 10):
-        new_cs = CandidateSolution(genotype=list(random.choice(list(fitness_evaluator.fitness_cache))))
+        new_cs = CandidateSolution(genotype=list(random.choice(list(fitness_evaluator.fitness_cache))), fitness_evaluator=fitness_evaluator)
         new_cs.evaluate()
         p = replace(p, new_cs)
     return p
@@ -87,10 +87,11 @@ def diversify_cached_random_immigrant(p: list):
 
 
 
-def evolve(max_iterations, pop_size, kt, geno_size, mutation_rate=None, crossover_rate=None):
+def evolve(max_iterations, pop_size, kt, geno_size, mutation_rate=None, crossover_rate=None, fitness_evaluator=None):
+    
     pop = []
     for _ in range(pop_size):
-        pop.append(CandidateSolution(geno_size))
+        pop.append(CandidateSolution(geno_size, fitness_evaluator=fitness_evaluator))
     for i in range(pop_size):
         pop[i].evaluate()
         
@@ -106,12 +107,12 @@ def evolve(max_iterations, pop_size, kt, geno_size, mutation_rate=None, crossove
         os1 = mutate(os1, rate=mutation_rate)
         os2 = mutate(os2, rate=mutation_rate)
 
-        cs1 = CandidateSolution(genotype=os1)
-        cs2 = CandidateSolution(genotype=os2)
+        cs1 = CandidateSolution(genotype=os1, fitness_evaluator=fitness_evaluator)
+        cs2 = CandidateSolution(genotype=os2, fitness_evaluator=fitness_evaluator)
         cs1.evaluate()
         cs2.evaluate()
         
-        #pop = diversify(pop)
+        #pop = diversify_cached_random_immigrant(pop, fitness_evaluator)
         
         pop = replace(pop, cs1)
         pop = replace(pop, cs2)
@@ -122,16 +123,12 @@ def evolve(max_iterations, pop_size, kt, geno_size, mutation_rate=None, crossove
             break
 
     print("\nBest Candidate Solution:", best.fitness, "@ iteration #", iteration)
-    print("FitnessCache usage:", fitness_evaluator.report_cache_usage())
+    cache_usage = fitness_evaluator.report_cache_usage()
+    print("FitnessCache usage:", cache_usage)
     #print(fitness_evaluator.fitness_cache)
     fitness_evaluator.zero_cache_usage()
+    return (best.fitness, iteration) + cache_usage
 
 
 
-
-if __name__ == '__main__':
-    #evolve(geno_size=100, max_iterations=400, pop_size=25, kt=2)
-    evolve(geno_size=1000, max_iterations=8000, pop_size=25, kt=2, crossover_rate=0.8)
-    #evolve(geno_size=10000, max_iterations=80000, pop_size=25, kt=5)
-    
 

@@ -1,11 +1,12 @@
 class FitnessEvaluator(object):
         
-    def __init__(self):
+    def __init__(self, fitness_function, max_fitness):
+        self.max_fitness = max_fitness
         #pass # if we init fields here, the constructor is run everytime we create a singleton
         self.cache_hits = 0
         self.cache_misses = 0
         self.fitness_cache = {}
-        self.max_fitness = None
+        self.fitness_function = fitness_function
             
     def evaluate(self, genotype):
         key = tuple(genotype)
@@ -15,7 +16,7 @@ class FitnessEvaluator(object):
             return self.fitness_cache[key]
         else:
             self.cache_misses += 1
-            fitness_value = self.OneMax(genotype)
+            fitness_value = self.fitness_function(genotype)
             self.fitness_cache[key] = fitness_value
             #print("after", self.fitness_cache)
             return fitness_value
@@ -27,21 +28,3 @@ class FitnessEvaluator(object):
         self.cache_hits = 0
         self.cache_misses = 0
         self.fitness_cache.clear()
-    
-    def OneMax(self, genotype):
-        if self.max_fitness is None:
-            self.max_fitness = len(genotype)
-        return sum(genotype)
-    
-
-
-
-    def ZeroMax(self, genotype):
-        if self.max_fitness is None:
-            self.max_fitness = len(genotype)
-        return len(genotype) - sum(genotype)
-    
-
-
-
-fitness_evaluator = FitnessEvaluator()
