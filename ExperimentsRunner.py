@@ -2,6 +2,7 @@ from FitnessEvaluator import FitnessEvaluator
 from SteadyStateGeneticAlgorithm import evolve
 from scipy.stats import mannwhitneyu, shapiro, ttest_ind
 import numpy
+import random
 
 def OneMax(genotype):
     return sum(genotype)
@@ -15,6 +16,7 @@ if __name__ == '__main__':
     number_of_trials = 100
     results1 = []
     results2 = []
+    random.seed(422399)
     fitness_evaluator = FitnessEvaluator(OneMax, 1000)
     #fitness_evaluator = FitnessEvaluator(OneMax, 1000)
     for i in range(number_of_trials):
