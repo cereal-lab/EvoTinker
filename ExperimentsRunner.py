@@ -13,28 +13,35 @@ def ZeroMax(genotype):
 if __name__ == '__main__':
     
     number_of_trials = 100
-    results = []
-    
+    results1 = []
+    results2 = []
     fitness_evaluator = FitnessEvaluator(OneMax, 1000)
+    #fitness_evaluator = FitnessEvaluator(OneMax, 1000)
     for i in range(number_of_trials):
         #evolve(geno_size=100, max_iterations=400, pop_size=25, kt=2)
         #result = evolve(geno_size=1000, max_iterations=8000, pop_size=25, kt=2, crossover_rate=0.8, fitness_evaluator=fitness_evaluator)
-        result = evolve(geno_size=1000, max_iterations=10_000, pop_size=25, kt=2, crossover_rate=0.8, fitness_evaluator=fitness_evaluator)
+        result1 = evolve(    geno_size=1000, 
+                            max_iterations=10_000, 
+                            pop_size=25, 
+                            kt=2, 
+                            crossover_rate=0.8, 
+                            fitness_evaluator=fitness_evaluator)
+        result2 = evolve(   geno_size=1000,
+                            max_iterations=10_000, 
+                            pop_size=25, 
+                            kt=2, 
+                            mutation_rate=0.01, 
+                            crossover_rate=0.8, 
+                            fitness_evaluator=fitness_evaluator)
         #evolve(geno_size=10000, max_iterations=80000, pop_size=25, kt=5)
-        print(f"Run #{i}",result)
+        print(f"Run #{i}",result1,result2)
         #print("\nBest Candidate Solution:", results[0], "@ iteration #", results[1])
         #print("FitnessCache usage:", results[2], results[3])
-        results.append(result)
+        results1.append(result1)
+        results2.append(result2)
 
-    series1 = [r for (_, r, _, _) in results]
-
-    fitness_evaluator = FitnessEvaluator(OneMax, 1000)
-    for i in range(number_of_trials):
-        result = evolve(geno_size=1000, max_iterations=10_000, pop_size=25, kt=2, mutation_rate=0.01, crossover_rate=0.8, fitness_evaluator=fitness_evaluator)
-        print(f"Run #{i}",result)
-        results.append(result)
-    
-    series2 = [r for (_, r, _, _) in results]
+    series1 = [r for (_, r, _, _) in results1]
+    series2 = [r for (_, r, _, _) in results2]
 
     
     print("Series 1 mean =", numpy.mean(series1))
