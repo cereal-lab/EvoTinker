@@ -26,3 +26,5 @@ if __name__ == '__main__':
         results.append(result)
 
     print([r for (_, r, _, _) in results])
+    #TODO - run experiments on OneMax / ZeroMax and perform statistical test
+    # see https://machinelearningmastery.com/statistical-hypothesis-tests-in-python-cheat-sheet/
