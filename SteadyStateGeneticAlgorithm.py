@@ -67,13 +67,6 @@ def replace(pop, cs):
 
 
 
-def select_OLD(p, kt=2):
-    pool = random.sample(p,k=kt)
-    return max(pool, key=lambda item: item.fitness)
-
-
-
-
 def select(p, kt=2):
     pool = random.sample(p,k=kt*2)
     mid = len(pool)//2
@@ -104,8 +97,7 @@ def diversify_cached_random_immigrant(p: list, fitness_evaluator: FitnessEvaluat
 
 
 
-def evolve(max_iterations, pop_size, kt, geno_size, mutation_rate=None, crossover_rate=None, fitness_evaluator=None,
-    select_old_method=None):
+def evolve(max_iterations, pop_size, kt, geno_size, mutation_rate=None, crossover_rate=None, fitness_evaluator=None):
     
     pop = []
     for _ in range(pop_size):
@@ -116,11 +108,9 @@ def evolve(max_iterations, pop_size, kt, geno_size, mutation_rate=None, crossove
     best = max(pop, key=lambda item: item.fitness)
 
     for iteration in range(max_iterations):
-        if select_old_method == True: 
-            p1 = select_OLD(pop, kt)
-            p2 = select_OLD(pop, kt)
-        else:
-            p1,p2 = select(pop, kt)
+        #    p1 = select_OLD(pop, kt)
+        #    p2 = select_OLD(pop, kt)
+        p1,p2 = select(pop, kt)
 
         os1, os2 = recombine(p1,p2, rate=crossover_rate)
 
