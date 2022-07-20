@@ -1,4 +1,5 @@
 import random
+import numpy
 from FitnessEvaluator import FitnessEvaluator
 
 
@@ -44,8 +45,11 @@ def mutate(cs, rate=None):
     if rate is None:
         rate = 1/len(cs)
         #rate = random.randint(1,len(cs)//4)/len(cs)
-    return [ (1-x) if random.random() < rate else x for x in cs ]
-
+        return [ (1-x) if random.random() < rate else x for x in cs ]
+    else:
+        if rate == -1:
+            rate = numpy.random.power(5.0)
+        return [ (1-x) if random.random() < rate else x for x in cs ]
 
 
 

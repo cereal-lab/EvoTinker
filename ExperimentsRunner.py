@@ -30,7 +30,7 @@ if __name__ == '__main__':
 
     fitness_evaluator = FitnessEvaluator(OneMax, 1000)
     for i in range(number_of_trials):
-        result = evolve(geno_size=1000, max_iterations=10_000, pop_size=25, kt=5, crossover_rate=0.8, fitness_evaluator=fitness_evaluator)
+        result = evolve(geno_size=1000, max_iterations=10_000, pop_size=25, kt=2, mutation_rate=0.01, crossover_rate=0.8, fitness_evaluator=fitness_evaluator)
         print(f"Run #{i}",result)
         results.append(result)
     
