@@ -41,6 +41,7 @@ def recombine(p1: CandidateSolution, p2: CandidateSolution, rate=None):
 
 
 
+
 def mutate(cs, rate=None):
     if rate is None:
         rate = 1/len(cs)
@@ -50,6 +51,7 @@ def mutate(cs, rate=None):
         if rate == -1:
             rate = numpy.random.power(5.0)
         return [ (1-x) if random.random() < rate else x for x in cs ]
+
 
 
 
@@ -100,7 +102,6 @@ def evolve(max_iterations, pop_size, kt, geno_size, mutation_rate=None, crossove
         pop[i].evaluate()
         
     best = max(pop, key=lambda item: item.fitness)
-    #print(f"Iteration #0:", best.fitness)
 
     for iteration in range(max_iterations):
         p1 = select(pop, kt)

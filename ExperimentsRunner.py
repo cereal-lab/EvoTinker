@@ -18,7 +18,7 @@ if __name__ == '__main__':
     fitness_evaluator = FitnessEvaluator(OneMax, 1000)
     #fitness_evaluator = FitnessEvaluator(OneMax, 1000)
     for i in range(number_of_trials):
-        #evolve(geno_size=100, max_iterations=400, pop_size=25, kt=2)
+        #result = evolve(geno_size=100, max_iterations=400, pop_size=25, kt=2, crossover_rate=0.8, fitness_evaluator=fitness_evaluator)
         #result = evolve(geno_size=1000, max_iterations=8000, pop_size=25, kt=2, crossover_rate=0.8, fitness_evaluator=fitness_evaluator)
         result1 = evolve(    geno_size=1000, 
                             max_iterations=10_000, 
@@ -30,33 +30,22 @@ if __name__ == '__main__':
                             max_iterations=10_000, 
                             pop_size=25, 
                             kt=2, 
-                            mutation_rate=0.01, 
+                            mutation_rate=0.001, 
                             crossover_rate=0.8, 
                             fitness_evaluator=fitness_evaluator)
-        #evolve(geno_size=10000, max_iterations=80000, pop_size=25, kt=5)
+        #result = evolve(geno_size=10000, max_iterations=80000, pop_size=25, kt=5, crossover_rate=0.8, fitness_evaluator=fitness_evaluator)
         print(f"Run #{i}",result1,result2)
-        #print("\nBest Candidate Solution:", results[0], "@ iteration #", results[1])
-        #print("FitnessCache usage:", results[2], results[3])
         results1.append(result1)
         results2.append(result2)
 
     series1 = [r for (_, r, _, _) in results1]
     series2 = [r for (_, r, _, _) in results2]
 
-    
     print("Series 1 mean =", numpy.mean(series1))
     print("Series 2 mean =", numpy.mean(series2))
-    # Running experiments on OneMax / ZeroMax and performing statistical test
+    
+    # Performing statistical test
     # see https://machinelearningmastery.com/statistical-hypothesis-tests-in-python-cheat-sheet/
-
-    print("Mann-Whitney")
-    stat, p = mannwhitneyu(series1, series2)
-    print(stat,p)
-    if p > 0.05:
-        print('H0 not rejected: samples are from same distribution')
-    else:
-        print('H0 rejected: samples are NOT from same distribution')
-
 
     print("Shapiro")
     stat, p = shapiro(series1)
@@ -70,6 +59,16 @@ if __name__ == '__main__':
     stat, p = ttest_ind(series1, series2)
     print('stat=%.3f, p=%.3f' % (stat, p))
     if p > 0.05:
-        print('Probably the same distribution')
+        print('Probably the SAME distribution')
     else:
-        print('Probably different distributions')
+        print('Probably DIFFERENT distributions')
+        
+    print("Mann-Whitney")
+    stat, p = mannwhitneyu(series1, series2)
+    print(stat,p)
+    if p > 0.05:
+        print('H0 not rejected: samples are from SAME distribution')
+    else:
+        print('H0 rejected: samples are from DIFFERENT distribution')
+
+
