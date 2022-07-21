@@ -21,6 +21,8 @@ if __name__ == '__main__':
     # fitness_evaluator = FitnessEvaluator(OneMax, 1000)
     fitness_evaluator = FitnessEvaluator(OneMax, 100)
     for i in range(number_of_trials):
+        
+        # Small size
         #result = evolve(geno_size=100, max_iterations=400, pop_size=25, kt=2, crossover_rate=0.8, fitness_evaluator=fitness_evaluator)
         result1 = evolve(   geno_size=100, 
                             max_iterations=800, 
