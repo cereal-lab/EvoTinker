@@ -67,7 +67,7 @@ def replace(pop, cs):
 
 
 
-def select(p, kt=2):
+def select_both(p, kt=2):
     pool = random.sample(p,k=kt*2)
     mid = len(pool)//2
     pool1 = pool[:mid]
@@ -75,6 +75,11 @@ def select(p, kt=2):
     p1 = max(pool1, key=lambda item: item.fitness)
     p2 = max(pool2, key=lambda item: item.fitness)
     return p1, p2
+
+def select_one(p, kt=2):
+    pool = random.sample(p,k=kt)
+    return max(pool, key=lambda item: item.fitness)
+    
 
 
     
@@ -97,20 +102,19 @@ def diversify_cached_random_immigrant(p: list, fitness_evaluator: FitnessEvaluat
 
 
 
-def evolve(max_iterations, pop_size, kt, geno_size, mutation_rate=None, crossover_rate=None, fitness_evaluator=None):
-    
+def evolve(max_iterations, pop_size, kt, geno_size, mutation_rate=None, crossover_rate=None, fitness_evaluator=None):    
     pop = []
     for _ in range(pop_size):
-        pop.append(CandidateSolution(geno_size, fitness_evaluator=fitness_evaluator))
-    for i in range(pop_size):
-        pop[i].evaluate()
+        cs = CandidateSolution(geno_size, fitness_evaluator=fitness_evaluator)
+        cs.evaluate()
+        pop.append(cs)
         
     best = max(pop, key=lambda item: item.fitness)
 
     for iteration in range(max_iterations):
-        #    p1 = select_OLD(pop, kt)
-        #    p2 = select_OLD(pop, kt)
-        p1,p2 = select(pop, kt)
+        #    p1 = select_one(pop, kt)
+        #    p2 = select_one(pop, kt)
+        p1,p2 = select_both(pop, kt)
 
         os1, os2 = recombine(p1,p2, rate=crossover_rate)
 
