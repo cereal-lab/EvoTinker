@@ -10,6 +10,8 @@ def OneMax(genotype):
 def ZeroMax(genotype):
     return len(genotype) - sum(genotype)
 
+import sat
+
 
 if __name__ == '__main__':
     
@@ -19,25 +21,45 @@ if __name__ == '__main__':
     random.seed(422399)
     # Adapt the size below to that used in the loop
     # fitness_evaluator = FitnessEvaluator(OneMax, 1000)
-    fitness_evaluator = FitnessEvaluator(OneMax, 100)
+    #fitness_evaluator = FitnessEvaluator(OneMax, 100)
+    fitness_evaluator = FitnessEvaluator(sat.evaluate_formula, 91)
+    
     for i in range(number_of_trials):
         
-        # Small size
-        #result = evolve(geno_size=100, max_iterations=400, pop_size=25, kt=2, crossover_rate=0.8, fitness_evaluator=fitness_evaluator)
-        result1 = evolve(   geno_size=100, 
-                            max_iterations=800, 
-                            pop_size=25, 
+        # SAT 
+        result1 = evolve(   geno_size=20, 
+                            max_iterations=1_000_000, 
+                            pop_size=50, 
                             kt=5, 
                             crossover_rate=1.0, 
                             fitness_evaluator=fitness_evaluator)
-        result2 = evolve(   geno_size=100, 
-                            max_iterations=800, 
-                            pop_size=25, 
+        result2 = evolve(   geno_size=20, 
+                            max_iterations=1_000_000, 
+                            pop_size=50, 
                             kt=2, 
                             crossover_rate=1.0, 
                             fitness_evaluator=fitness_evaluator)
+                
+
+
+
+
+        # ONEMAX Small size
+        #result = evolve(geno_size=100, max_iterations=400, pop_size=25, kt=2, crossover_rate=0.8, fitness_evaluator=fitness_evaluator)
+        # result1 = evolve(   geno_size=100, 
+        #                     max_iterations=800, 
+        #                     pop_size=25, 
+        #                     kt=5, 
+        #                     crossover_rate=1.0, 
+        #                     fitness_evaluator=fitness_evaluator)
+        # result2 = evolve(   geno_size=100, 
+        #                     max_iterations=800, 
+        #                     pop_size=25, 
+        #                     kt=2, 
+        #                     crossover_rate=1.0, 
+        #                     fitness_evaluator=fitness_evaluator)
         
-        # Reasonable size 
+        # ONEMAX Reasonable size 
         #result = evolve(geno_size=1000, max_iterations=8000, pop_size=25, kt=2, crossover_rate=0.8, fitness_evaluator=fitness_evaluator)
         
         # result1 = evolve(   geno_size=1000, 
