@@ -28,15 +28,15 @@ if __name__ == '__main__':
         
         # SAT 
         result1 = evolve(   geno_size=20, 
-                            max_iterations=1_000_000, 
-                            pop_size=50, 
-                            kt=5, 
+                            max_iterations=400_000, 
+                            pop_size=25, 
+                            kt=2, 
                             crossover_rate=1.0, 
                             fitness_evaluator=fitness_evaluator)
         result2 = evolve(   geno_size=20, 
-                            max_iterations=1_000_000, 
-                            pop_size=50, 
-                            kt=2, 
+                            max_iterations=400_000, 
+                            pop_size=25, 
+                            kt=5, 
                             crossover_rate=1.0, 
                             fitness_evaluator=fitness_evaluator)
                 
