@@ -1,3 +1,4 @@
+from calendar import c
 import random
 import numpy
 from FitnessEvaluator import FitnessEvaluator
@@ -35,27 +36,40 @@ def recombine(p1: CandidateSolution, p2: CandidateSolution, rate=None):
                 for i in range(len(mask))]
             os2 = [p1.genotype[i] if mask[i] == 1 else p2.genotype[i]
                 for i in range(len(mask))]
+            os1 = CandidateSolution(genotype=os1, fitness_evaluator=p1.fitness_evaluator)
+            os2 = CandidateSolution(genotype=os2, fitness_evaluator=p2.fitness_evaluator)
+            #os1.evaluate()
+            #os2.evaluate()
             return os1,os2
     else:
-        return p1.genotype, p2.genotype
+        return p1, p2
 
 
 
 
-def mutate(cs, rate=None):
+def mutate(cs: CandidateSolution, rate=None) -> CandidateSolution:
     if rate is None:
-        rate = 1/len(cs)
-        #rate = random.randint(1,len(cs)//4)/len(cs)
-        return [ (1-x) if random.random() < rate else x for x in cs ]
-    else:
-        if rate == -1:
-            rate = numpy.random.power(5.0)
-        return [ (1-x) if random.random() < rate else x for x in cs ]
+        rate = 1/len(cs.genotype)
+    new_geno = [ (1-x) if random.random() < rate else x for x in cs.genotype ]
+    new_cs = CandidateSolution(genotype=new_geno, fitness_evaluator= cs.fitness_evaluator)
+    #new_cs.evaluate()
+    return new_cs
+
+
+
+def local_search(cs: CandidateSolution) -> CandidateSolution:
+    if cs.fitness is None:
+        cs.evaluate()
+    rate = 1/len(cs.genotype)
+    mutated = [ (1-x) if random.random() < rate else x for x in cs.genotype ]
+    new_cs = CandidateSolution(genotype=mutated, fitness_evaluator=cs.fitness_evaluator)
+    new_cs.evaluate()
+    return new_cs if new_cs.fitness > cs.fitness else cs
 
 
 
 
-def replace(pop, cs):
+def replace(pop: list, cs) -> list:
     smallest = min(pop, key=lambda item: item.fitness)
     for i in range(len(pop)):
         if pop[i].fitness == smallest.fitness:
@@ -67,7 +81,7 @@ def replace(pop, cs):
 
 
 
-def select_both(p, kt=2):
+def select_both(p: list, kt=2):
     pool = random.sample(p,k=kt*2)
     mid = len(pool)//2
     pool1 = pool[:mid]
@@ -112,24 +126,25 @@ def evolve(max_iterations, pop_size, kt, geno_size, mutation_rate=None, crossove
     best = max(pop, key=lambda item: item.fitness)
 
     for iteration in range(max_iterations):
-        #    p1 = select_one(pop, kt)
-        #    p2 = select_one(pop, kt)
-        p1,p2 = select_both(pop, kt)
+        p1 = select_one(pop, kt)
+        p2 = select_one(pop, kt)
+        #p1,p2 = select_both(pop, kt)
 
         os1, os2 = recombine(p1,p2, rate=crossover_rate)
-
-        os1 = mutate(os1, rate=mutation_rate)
-        os2 = mutate(os2, rate=mutation_rate)
-
-        cs1 = CandidateSolution(genotype=os1, fitness_evaluator=fitness_evaluator)
-        cs2 = CandidateSolution(genotype=os2, fitness_evaluator=fitness_evaluator)
-        cs1.evaluate()
-        cs2.evaluate()
         
+        if mutation_rate == -1:
+            os1 = local_search(os1)
+            os2 = local_search(os2)
+        else:
+            os1 = mutate(os1, rate=mutation_rate)
+            os2 = mutate(os2, rate=mutation_rate)
+            os1.evaluate()
+            os2.evaluate()
+
         #pop = diversify_cached_random_immigrant(pop, fitness_evaluator)
         
-        pop = replace(pop, cs1)
-        pop = replace(pop, cs2)
+        pop = replace(pop, os1)
+        pop = replace(pop, os2)
 
         best = max(pop, key=lambda item: item.fitness)
         if best.fitness >= fitness_evaluator.max_fitness:
