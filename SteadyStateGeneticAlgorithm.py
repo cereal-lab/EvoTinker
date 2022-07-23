@@ -133,6 +133,7 @@ def evolve( max_iterations, pop_size, kt, geno_size,
     best = max(pop, key=lambda item: item.fitness)
 
     for iteration in range(max_iterations):
+        #print(f"Iteration #{iteration}")
         p1 = select_one(pop, kt)
         p2 = select_one(pop, kt)
         #p1,p2 = select_both(pop, kt)
