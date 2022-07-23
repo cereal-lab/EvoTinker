@@ -18,10 +18,10 @@ class CandidateSolution(object):
         else:
             self.genotype = genotype
         self.fitness = None
+        self.outcome = None
         
     def evaluate(self):
-        #self.fitness = FitnessEvaluator().evaluate(self.genotype)
-        self.fitness = self.fitness_evaluator.evaluate(self.genotype)
+        self.fitness, self.outcome = self.fitness_evaluator.evaluate(self.genotype)
     
     def __repr__(self):
         return f"<{self.genotype}>"
@@ -94,8 +94,50 @@ def select_both(p: list, kt=2):
 def select_one(p, kt=2):
     pool = random.sample(p,k=kt)
     return max(pool, key=lambda item: item.fitness)
-    
 
+def pareto_dominates(cs1: CandidateSolution, cs2:CandidateSolution):
+    size=len(cs1.outcome)
+    for i in range(size):
+        if cs1.outcome[i] < cs2.outcome[i]:
+            return False
+    return True
+    
+def are_pareto_incomparable(cs1: CandidateSolution, cs2:CandidateSolution):
+    return not (pareto_dominates(cs1, cs2) or pareto_dominates(cs2, cs1))
+    
+def select_pareto(p: list, kt=2):
+    pool = random.sample(p,k=kt) # here kt is the size of the pool from which we select BOTH parents
+    matrix = []
+    size = len(pool)
+    only_falses = True
+    list_of_incomparables_coordinates = []
+    for a in range(size):
+        row = []
+        for b in range(size):
+            question = are_pareto_incomparable(pool[a], pool[b])
+            row.append(question)
+            if question:
+                only_falses = False
+                list_of_incomparables_coordinates.append((a,b))
+        matrix.append(row)
+
+    if only_falses:
+        # return two random parents from the pool
+        #print("no incomparable parents found")
+        #p1 = random.choice(pool)
+        #p2 = random.choice(pool)
+        # use fitness-based selection instead
+        p1 = select_one(p, kt)
+        p2 = select_one(p, kt)
+    else:
+        #print()
+        # find two incomparables
+        a,b = random.choice(list_of_incomparables_coordinates)
+        p1 = pool[a]
+        p2 = pool[b]
+    return p1,p2
+            
+    
 
     
 def diversify_random_immigrant(p: list, fitness_evaluator: FitnessEvaluator):
@@ -123,6 +165,7 @@ def diversify_cached_random_immigrant(p: list, fitness_evaluator: FitnessEvaluat
 def evolve( max_iterations, pop_size, kt, geno_size, 
             local_search=False,
             random_immigrant=False,
+            pareto_select=False,
             mutation_rate=None, 
             crossover_rate=None, 
             fitness_evaluator=None):    
@@ -136,9 +179,12 @@ def evolve( max_iterations, pop_size, kt, geno_size,
 
     for iteration in range(max_iterations):
         #print(f"Iteration #{iteration}")
-        p1 = select_one(pop, kt)
-        p2 = select_one(pop, kt)
-        #p1,p2 = select_both(pop, kt)
+        if pareto_select:
+            p1,p2 = select_pareto(pop, 5)
+        else:
+            p1 = select_one(pop, kt)
+            p2 = select_one(pop, kt)
+            #p1,p2 = select_both(pop, kt)
 
         os1, os2 = recombine(p1,p2, rate=crossover_rate)
         

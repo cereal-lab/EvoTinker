@@ -38,7 +38,7 @@ def evaluate_formula(genotype: list):
         evaluation[i] = result
 
     fitness = sum([1 if val == True else 0 for val in evaluation])
-    return fitness
+    return fitness, evaluation
 
 if __name__ == '__main__':
     pass

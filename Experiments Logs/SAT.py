@@ -1,4 +1,73 @@
 #-----------------------------------------------------------------        
+    # SAT
+# NOTE
+# - comparing regular selection to pareto selection
+# - last run without parallelisation
+# --> Pareto select makes no differences OR it is bugged OR not used enough
+#       Last possibility => try with longer genotypes to raise probability
+#       of incompatible outcome vectors (or longer formulas)
+
+    fitness_evaluator = FitnessEvaluator(sat.evaluate_formula, 91)
+    for i in range(number_of_trials):        
+        result1 = evolve(   geno_size=20, 
+                            max_iterations=400_000, 
+                            pop_size=25, 
+                            kt=2, 
+                            local_search=True,
+                            crossover_rate=1.0, 
+                            fitness_evaluator=fitness_evaluator)
+        result2 = evolve(   geno_size=20, 
+                            max_iterations=400_000, 
+                            pop_size=25, 
+                            kt=2, 
+                            pareto_select=True, # <---
+                            local_search=True,
+                            crossover_rate=1.0, 
+                            fitness_evaluator=fitness_evaluator)
+        print(f"Run #{i}\t{result1}\t{result2}")
+        results1.append(result1)
+        results2.append(result2)
+# Run #24 (91, 322344, 1446177, 487918)   (90, 399999, 1822438, 577587)
+# Run #25 (90, 399999, 1834169, 565856)   (91, 191694, 798806, 351389)
+# Run #26 (91, 195288, 838685, 333074)    (91, 70042, 277202, 143081)
+# Run #27 (91, 60401, 242250, 120187)     (90, 399999, 1814971, 585054)
+# Run #28 (91, 388694, 1778303, 553892)   (90, 399999, 1813086, 586939)
+# Run #29 (91, 5213, 19475, 11834)        (91, 327762, 1457155, 509448)
+
+
+# Statistic #0
+#         Series 1 mean = 90.7
+#         Series 2 mean = 90.6
+#         Shapiro:         stat=     0.577, p=     0.000   --> Probably not Gaussian
+#         Student T:       stat=     0.803, p=     0.425   --> SAME distribution
+#         Mann-Whitney:    stat=   495.000, p=     0.426   --> SAME distribution
+
+
+# Statistic #1
+#         Series 1 mean = 261295.53333333333
+#         Series 2 mean = 244860.66666666666
+#         Shapiro:         stat=     0.864, p=     0.001   --> Probably not Gaussian
+#         Student T:       stat=     0.427, p=     0.671   --> SAME distribution
+#         Mann-Whitney:    stat=   460.000, p=     0.886   --> SAME distribution
+
+
+# Statistic #2
+#         Series 1 mean = 1172603.0333333334
+#         Series 2 mean = 1091061.4666666666
+#         Shapiro:         stat=     0.863, p=     0.001   --> Probably not Gaussian
+#         Student T:       stat=     0.455, p=     0.651   --> SAME distribution
+#         Mann-Whitney:    stat=   528.000, p=     0.252   --> SAME distribution
+
+
+# Statistic #3
+#         Series 1 mean = 395201.1666666667
+#         Series 2 mean = 378133.5333333333
+#         Shapiro:         stat=     0.857, p=     0.001   --> Probably not Gaussian
+#         Student T:       stat=     0.328, p=     0.744   --> SAME distribution
+#         Mann-Whitney:    stat=   394.000, p=     0.412   --> SAME distribution
+
+        
+#-----------------------------------------------------------------        
 # SAT
 # NOTE adding RI does not seem to change the # of cache misses i.e., 
 # the # of points in the search space that are considered during the search
