@@ -34,9 +34,9 @@ if __name__ == '__main__':
         result2 = evolve(   geno_size=20, 
                             max_iterations=400_000, 
                             pop_size=25, 
-                            kt=5, 
+                            kt=2, 
                             local_search=True,
-                            #random_immigrant=True,
+                            random_immigrant=True,
                             crossover_rate=1.0, 
                             fitness_evaluator=fitness_evaluator)
         print(f"Run #{i}\t{result1}\t{result2}")

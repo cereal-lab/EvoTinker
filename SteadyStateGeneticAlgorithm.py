@@ -103,13 +103,15 @@ def diversify_random_immigrant(p: list, fitness_evaluator: FitnessEvaluator):
     for _ in range(len(p) // 5):
         new_cs = CandidateSolution(len(p[0].genotype), fitness_evaluator=fitness_evaluator)
         new_cs.evaluate()
-        pop = replace(pop, new_cs)
+        p = replace(p, new_cs)
     return p
     
 def diversify_cached_random_immigrant(p: list, fitness_evaluator: FitnessEvaluator):
     # cached random immigrant below:
-    for _ in range(len(p) // 5):
-        new_cs = CandidateSolution( genotype=list(random.choice(list(fitness_evaluator.fitness_cache))), 
+    for i in range(len(p) // 5):
+        rnd_geno = list(random.choice(list(fitness_evaluator.fitness_cache)))
+        print(f"Immigrant #{i}\t{rnd_geno}")
+        new_cs = CandidateSolution( genotype=rnd_geno, 
                                     fitness_evaluator=fitness_evaluator)
         new_cs.evaluate()
         p = replace(p, new_cs)
@@ -151,7 +153,8 @@ def evolve( max_iterations, pop_size, kt, geno_size,
         os2.evaluate()
 
         if random_immigrant:
-            pop = diversify_cached_random_immigrant(pop, fitness_evaluator)
+            #pop = diversify_cached_random_immigrant(pop, fitness_evaluator)
+            pop = diversify_random_immigrant(pop, fitness_evaluator)
         
         pop = replace(pop, os1)
         pop = replace(pop, os2)

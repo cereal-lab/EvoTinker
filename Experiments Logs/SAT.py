@@ -1,4 +1,67 @@
 #-----------------------------------------------------------------        
+# SAT
+# NOTE adding RI does not seem to change the # of cache misses i.e., 
+# the # of points in the search space that are considered during the search
+
+    fitness_evaluator = FitnessEvaluator(sat.evaluate_formula, 91)
+    for i in range(number_of_trials):        
+        result1 = evolve(   geno_size=20, 
+                            max_iterations=400_000, 
+                            pop_size=25, 
+                            kt=2, 
+                            local_search=True,
+                            crossover_rate=1.0, 
+                            fitness_evaluator=fitness_evaluator)
+        result2 = evolve(   geno_size=20, 
+                            max_iterations=400_000, 
+                            pop_size=25, 
+                            kt=2, 
+                            local_search=True,
+                            random_immigrant=True, # <---
+                            crossover_rate=1.0, 
+                            fitness_evaluator=fitness_evaluator)
+        print(f"Run #{i}\t{result1}\t{result2}")
+        results1.append(result1)
+#         results2.append(result2)
+# Run #94 (90, 399999, 1834389, 565636)   (91, 93031, 535474, 487903)
+# Run #95 (91, 130035, 543776, 236465)    (91, 59392, 306733, 346615)
+# Run #96 (90, 399999, 1834310, 565715)   (90, 399999, 3423152, 976873)
+# Run #97 (91, 5330, 19067, 12944)        (91, 31613, 144213, 203566)
+# Run #98 (91, 351764, 1591998, 518617)   (91, 127944, 802187, 605233)
+# Run #99 (90, 399999, 1834670, 565355)   (91, 131172, 828004, 614924)
+
+
+# Statistic #0
+#         Series 1 mean = 90.56
+#         Series 2 mean = 90.91
+#         Shapiro:         stat=     0.631, p=     0.000   --> Probably not Gaussian
+#         Student T:       stat=    -6.078, p=     0.000   --> DIFFERENT distributions
+#         Mann-Whitney:    stat=  3250.000, p=     0.000   --> DIFFERENT distribution
+
+
+# Statistic #1
+#         Series 1 mean = 269755.28
+#         Series 2 mean = 104432.77
+#         Shapiro:         stat=     0.812, p=     0.000   --> Probably not Gaussian
+#         Student T:       stat=     8.953, p=     0.000   --> DIFFERENT distributions
+#         Mann-Whitney:    stat=  8023.000, p=     0.000   --> DIFFERENT distribution
+
+
+# Statistic #2
+#         Series 1 mean = 1215746.3
+#         Series 2 mean = 739191.72
+#         Shapiro:         stat=     0.811, p=     0.000   --> Probably not Gaussian
+#         Student T:       stat=     3.903, p=     0.000   --> DIFFERENT distributions
+#         Mann-Whitney:    stat=  7310.000, p=     0.000   --> DIFFERENT distribution
+
+
+# Statistic #3
+#         Series 1 mean = 402816.38
+#         Series 2 mean = 409604.75
+#         Shapiro:         stat=     0.810, p=     0.000   --> Probably not Gaussian
+#         Student T:       stat=    -0.195, p=     0.846   --> SAME distribution
+#         Mann-Whitney:    stat=  5322.000, p=     0.432   --> SAME distribution
+#-----------------------------------------------------------------        
     # SAT
     # NOTE no differences between k=2 and k=5
     fitness_evaluator = FitnessEvaluator(sat.evaluate_formula, 91)
