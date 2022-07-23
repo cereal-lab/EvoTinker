@@ -57,7 +57,7 @@ def mutate(cs: CandidateSolution, rate=None) -> CandidateSolution:
 
 
 
-def local_search(cs: CandidateSolution) -> CandidateSolution:
+def improve(cs: CandidateSolution) -> CandidateSolution:
     if cs.fitness is None:
         cs.evaluate()
     #rate = 1/len(cs.genotype)
@@ -108,8 +108,9 @@ def diversify_random_immigrant(p: list, fitness_evaluator: FitnessEvaluator):
     
 def diversify_cached_random_immigrant(p: list, fitness_evaluator: FitnessEvaluator):
     # cached random immigrant below:
-    for _ in range(len(p) // 10):
-        new_cs = CandidateSolution(genotype=list(random.choice(list(fitness_evaluator.fitness_cache))), fitness_evaluator=fitness_evaluator)
+    for _ in range(len(p) // 5):
+        new_cs = CandidateSolution( genotype=list(random.choice(list(fitness_evaluator.fitness_cache))), 
+                                    fitness_evaluator=fitness_evaluator)
         new_cs.evaluate()
         p = replace(p, new_cs)
     return p
@@ -117,7 +118,12 @@ def diversify_cached_random_immigrant(p: list, fitness_evaluator: FitnessEvaluat
 
 
 
-def evolve(max_iterations, pop_size, kt, geno_size, mutation_rate=None, crossover_rate=None, fitness_evaluator=None):    
+def evolve( max_iterations, pop_size, kt, geno_size, 
+            local_search=False,
+            random_immigrant=False,
+            mutation_rate=None, 
+            crossover_rate=None, 
+            fitness_evaluator=None):    
     pop = []
     for _ in range(pop_size):
         cs = CandidateSolution(geno_size, fitness_evaluator=fitness_evaluator)
@@ -133,16 +139,18 @@ def evolve(max_iterations, pop_size, kt, geno_size, mutation_rate=None, crossove
 
         os1, os2 = recombine(p1,p2, rate=crossover_rate)
         
-        if mutation_rate == -1:
-            os1 = local_search(os1)
-            os2 = local_search(os2)
-        else:
-            os1 = mutate(os1, rate=mutation_rate)
-            os2 = mutate(os2, rate=mutation_rate)
-            os1.evaluate()
-            os2.evaluate()
+        if local_search:
+            os1 = improve(os1)
+            os2 = improve(os2)
+    
+        os1 = mutate(os1, rate=mutation_rate)
+        os2 = mutate(os2, rate=mutation_rate)
+    
+        os1.evaluate()
+        os2.evaluate()
 
-        #pop = diversify_cached_random_immigrant(pop, fitness_evaluator)
+        if random_immigrant:
+            pop = diversify_cached_random_immigrant(pop, fitness_evaluator)
         
         pop = replace(pop, os1)
         pop = replace(pop, os2)
