@@ -1,4 +1,107 @@
 #-----------------------------------------------------------------        
+
+    # SAT
+# NOTE
+# - first run in parallel, repeat of the previous one
+# - did NOT confirm that pareto selection is not working
+#   --> try with more clauses?! nah
+#   --> check for bugs in implementation
+#  
+    fitness_evaluator = FitnessEvaluator(sat.evaluate_formula, 91)
+    for i in range(number_of_trials):        
+        with ProcessPoolExecutor(2) as executor:
+            future_1a = executor.submit( evolve, 
+                                        geno_size=20, 
+                                        max_iterations=400_000, 
+                                        pop_size=25, 
+                                        kt=2, 
+                                        local_search=True,
+                                        crossover_rate=1.0, 
+                                        fitness_evaluator=fitness_evaluator)
+            future_1b = executor.submit( evolve, 
+                                        geno_size=20, 
+                                        max_iterations=400_000, 
+                                        pop_size=25, 
+                                        kt=2, 
+                                        local_search=True,
+                                        crossover_rate=1.0, 
+                                        fitness_evaluator=fitness_evaluator)
+            future_2a = executor.submit( evolve, 
+                                        geno_size=20, 
+                                        max_iterations=400_000, 
+                                        pop_size=25, 
+                                        kt=2, 
+                                        pareto_select=True, # <---
+                                        local_search=True,
+                                        crossover_rate=1.0, 
+                                        fitness_evaluator=fitness_evaluator)
+            future_2b = executor.submit( evolve, 
+                                        geno_size=20, 
+                                        max_iterations=400_000, 
+                                        pop_size=25, 
+                                        kt=2, 
+                                        pareto_select=True, # <---
+                                        local_search=True,
+                                        crossover_rate=1.0, 
+                                        fitness_evaluator=fitness_evaluator)
+            result1a = future_1a.result()
+            result1b = future_1b.result()
+            result2a = future_2a.result()
+            result2b = future_2b.result()
+        print(f"Run #{i}\t{result1a}\t{result2a}")
+        print(f"Run #{i}\t{result1b}\t{result2b}")
+        results1.append(result1a)
+        results1.append(result1b)
+        results2.append(result2a)
+        results2.append(result2b)
+
+# Run #24 (91, 201896, 869558, 341849)    (90, 399999, 1822593, 577432)
+# Run #24 (91, 164431, 698186, 288431)    (91, 38283, 138609, 91120)
+# Run #25 (90, 399999, 1835966, 564059)   (91, 80960, 321768, 164023)
+# Run #25 (90, 399999, 1833705, 566320)   (90, 399999, 1805842, 594183)
+# Run #26 (91, 98982, 408567, 185356)     (91, 59803, 230039, 128810)
+# Run #26 (90, 399999, 1834171, 565854)   (90, 399999, 1820424, 579601)
+# Run #27 (90, 399999, 1834243, 565782)   (90, 399999, 1822048, 577977)
+# Run #27 (91, 17303, 66322, 37527)       (90, 399999, 1823376, 576649)
+# Run #28 (91, 44918, 177964, 91575)      (90, 399999, 1820565, 579460)
+# Run #28 (91, 227538, 989772, 375487)    (91, 110919, 419419, 246126)
+# Run #29 (90, 399999, 1834282, 565743)   (91, 153117, 633006, 285727)
+# Run #29 (91, 102241, 421747, 191730)    (91, 116266, 474703, 222924)
+
+
+# Statistic #0
+#         Series 1 mean = 90.55
+#         Series 2 mean = 90.53333333333333
+#         Shapiro:         stat=     0.633, p=     0.000   --> Probably not Gaussian
+#         Student T:       stat=     0.176, p=     0.861   --> SAME distribution
+#         Mann-Whitney:    stat=  1813.500, p=     0.937   --> SAME distribution
+
+
+# Statistic #1
+#         Series 1 mean = 266121.43333333335
+#         Series 2 mean = 267490.45
+#         Shapiro:         stat=     0.802, p=     0.000   --> Probably not Gaussian
+#         Student T:       stat=    -0.053, p=     0.958   --> SAME distribution
+#         Mann-Whitney:    stat=  1794.500, p=     0.978   --> SAME distribution
+
+
+# Statistic #2
+#         Series 1 mean = 1197716.0666666667
+#         Series 2 mean = 1189064.7666666666
+#         Shapiro:         stat=     0.798, p=     0.000   --> Probably not Gaussian
+#         Student T:       stat=     0.071, p=     0.944   --> SAME distribution
+#         Mann-Whitney:    stat=  2174.000, p=     0.050   --> DIFFERENT distribution
+
+
+# Statistic #3
+#         Series 1 mean = 399043.5333333333
+#         Series 2 mean = 415908.93333333335
+#         Shapiro:         stat=     0.812, p=     0.000   --> Probably not Gaussian
+#         Student T:       stat=    -0.498, p=     0.620   --> SAME distribution
+#         Mann-Whitney:    stat=  1369.000, p=     0.024   --> DIFFERENT distribution
+
+
+#-----------------------------------------------------------------        
     # SAT
 # NOTE
 # - comparing regular selection to pareto selection
