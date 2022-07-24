@@ -1,3 +1,10 @@
+from encodings import search_function
+from termios import CS5, TIOCPKT_DOSTOP
+TODOs
+    .   try novelty search
+    .   try pareto selection of pareto dominant CS
+    .   try just the local search alone
+
 #-----------------------------------------------------------------        
 
     # SAT
@@ -6,6 +13,11 @@
 # - did NOT confirm that pareto selection is not working
 #   --> try with more clauses?! nah
 #   --> check for bugs in implementation
+#   --> we have high fitness very often, > 80, so many clauses are satisfied
+#       two pareto incomparable CS have less clauses in common maybe?
+#       BUT mix and matching these CS introduces incompatibilities
+#       e.g., one has a var true that gives 3 first clauses, the other
+#       has it false which gives the last 3 clauses... 
 #  
     fitness_evaluator = FitnessEvaluator(sat.evaluate_formula, 91)
     for i in range(number_of_trials):        

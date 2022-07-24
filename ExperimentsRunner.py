@@ -16,7 +16,7 @@ import sat
 
 if __name__ == '__main__':
     
-    number_of_trials = 30
+    number_of_trials = 50
     results1 = []
     results2 = []
     random.seed(422399)
