@@ -19,54 +19,93 @@ TODOs
 #       e.g., one has a var true that gives 3 first clauses, the other
 #       has it false which gives the last 3 clauses... 
 #  
-    fitness_evaluator = FitnessEvaluator(sat.evaluate_formula, 91)
-    for i in range(number_of_trials):        
-        with ProcessPoolExecutor(2) as executor:
-            future_1a = executor.submit( evolve, 
-                                        geno_size=20, 
-                                        max_iterations=400_000, 
-                                        pop_size=25, 
-                                        kt=2, 
-                                        local_search=True,
-                                        crossover_rate=1.0, 
-                                        fitness_evaluator=fitness_evaluator)
-            future_1b = executor.submit( evolve, 
-                                        geno_size=20, 
-                                        max_iterations=400_000, 
-                                        pop_size=25, 
-                                        kt=2, 
-                                        local_search=True,
-                                        crossover_rate=1.0, 
-                                        fitness_evaluator=fitness_evaluator)
-            future_2a = executor.submit( evolve, 
-                                        geno_size=20, 
-                                        max_iterations=400_000, 
-                                        pop_size=25, 
-                                        kt=2, 
-                                        pareto_select=True, # <---
-                                        local_search=True,
-                                        crossover_rate=1.0, 
-                                        fitness_evaluator=fitness_evaluator)
-            future_2b = executor.submit( evolve, 
-                                        geno_size=20, 
-                                        max_iterations=400_000, 
-                                        pop_size=25, 
-                                        kt=2, 
-                                        pareto_select=True, # <---
-                                        local_search=True,
-                                        crossover_rate=1.0, 
-                                        fitness_evaluator=fitness_evaluator)
-            result1a = future_1a.result()
-            result1b = future_1b.result()
-            result2a = future_2a.result()
-            result2b = future_2b.result()
-        print(f"Run #{i}\t{result1a}\t{result2a}")
-        print(f"Run #{i}\t{result1b}\t{result2b}")
-        results1.append(result1a)
-        results1.append(result1b)
-        results2.append(result2a)
-        results2.append(result2b)
+#     fitness_evaluator = FitnessEvaluator(sat.evaluate_formula, 91)
+#     for i in range(number_of_trials):        
+#         with ProcessPoolExecutor(2) as executor:
+#             future_1a = executor.submit( evolve, 
+#                                         geno_size=20, 
+#                                         max_iterations=400_000, 
+#                                         pop_size=25, 
+#                                         kt=2, 
+#                                         local_search=True,
+#                                         crossover_rate=1.0, 
+#                                         fitness_evaluator=fitness_evaluator)
+#             future_1b = executor.submit( evolve, 
+#                                         geno_size=20, 
+#                                         max_iterations=400_000, 
+#                                         pop_size=25, 
+#                                         kt=2, 
+#                                         local_search=True,
+#                                         crossover_rate=1.0, 
+#                                         fitness_evaluator=fitness_evaluator)
+#             future_2a = executor.submit( evolve, 
+#                                         geno_size=20, 
+#                                         max_iterations=400_000, 
+#                                         pop_size=25, 
+#                                         kt=2, 
+#                                         pareto_select=True, # <---
+#                                         local_search=True,
+#                                         crossover_rate=1.0, 
+#                                         fitness_evaluator=fitness_evaluator)
+#             future_2b = executor.submit( evolve, 
+#                                         geno_size=20, 
+#                                         max_iterations=400_000, 
+#                                         pop_size=25, 
+#                                         kt=2, 
+#                                         pareto_select=True, # <---
+#                                         local_search=True,
+#                                         crossover_rate=1.0, 
+#                                         fitness_evaluator=fitness_evaluator)
+#             result1a = future_1a.result()
+#             result1b = future_1b.result()
+#             result2a = future_2a.result()
+#             result2b = future_2b.result()
+#         print(f"Run #{i}\t{result1a}\t{result2a}")
+#         print(f"Run #{i}\t{result1b}\t{result2b}")
+#         results1.append(result1a)
+#         results1.append(result1b)
+#         results2.append(result2a)
+#         results2.append(result2b)
 
+# # ------------ 50 trials w/ doubles
+# # same as below
+
+
+# Statistic #0
+#         Series 1 mean = 90.56
+#         Series 2 mean = 90.54
+#         Shapiro:         stat=     0.631, p=     0.000   --> Probably not Gaussian
+#         Student T:       stat=     0.283, p=     0.778   --> SAME distribution
+#         Mann-Whitney:    stat=  5100.000, p=     0.778   --> SAME distribution
+
+
+# Statistic #1
+#         Series 1 mean = 260220.39
+#         Series 2 mean = 269737.53
+#         Shapiro:         stat=     0.798, p=     0.000   --> Probably not Gaussian
+#         Student T:       stat=    -0.445, p=     0.657   --> SAME distribution
+#         Mann-Whitney:    stat=  4848.000, p=     0.698   --> SAME distribution
+
+
+# Statistic #2
+#         Series 1 mean = 1173855.57
+#         Series 2 mean = 1205064.86
+#         Shapiro:         stat=     0.796, p=     0.000   --> Probably not Gaussian
+#         Student T:       stat=    -0.313, p=     0.755   --> SAME distribution
+#         Mann-Whitney:    stat=  5892.000, p=     0.029   --> DIFFERENT distribution
+
+
+# Statistic #3
+#         Series 1 mean = 387497.77
+#         Series 2 mean = 413391.32
+#         Shapiro:         stat=     0.801, p=     0.000   --> Probably not Gaussian
+#         Student T:       stat=    -0.900, p=     0.369   --> SAME distribution
+#         Mann-Whitney:    stat=  3680.000, p=     0.001   --> DIFFERENT distribution
+
+
+
+
+# ------------ 30 trials w/ doubles
 # Run #24 (91, 201896, 869558, 341849)    (90, 399999, 1822593, 577432)
 # Run #24 (91, 164431, 698186, 288431)    (91, 38283, 138609, 91120)
 # Run #25 (90, 399999, 1835966, 564059)   (91, 80960, 321768, 164023)
