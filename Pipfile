@@ -6,7 +6,6 @@ name = "pypi"
 [packages]
 scipy = "*"
 numpy = "*"
-pysat = "*"
 
 [dev-packages]
 
