@@ -6,6 +6,104 @@ TODOs
     .   try just the local search alone
 
 #-----------------------------------------------------------------        
+# comparing to local search only
+#-----------------------------------------------------------------        
+# NOTE
+# - exps are run all in parallel for SSGA, then with a 2nd loop
+#   for local search
+# - need to refactor this junk w/ loops
+
+   number_of_trials = 25
+    results1 = []
+    results2 = []
+    random.seed(422399)
+
+
+    # SAT
+    fitness_evaluator = FitnessEvaluator(sat.evaluate_formula, 91)
+    
+    for i in range(number_of_trials):        
+        with ProcessPoolExecutor(2) as executor:
+            future_1a = executor.submit( evolve_ssga, 
+                                        geno_size=20, 
+                                        max_iterations=400_000, 
+                                        pop_size=25, 
+                                        kt=2, 
+                                        local_search=True,
+                                        crossover_rate=1.0, 
+                                        fitness_evaluator=fitness_evaluator)
+            future_1b = executor.submit( evolve_ssga, 
+                                        geno_size=20, 
+                                        max_iterations=400_000, 
+                                        pop_size=25, 
+                                        kt=2, 
+                                        local_search=True,
+                                        crossover_rate=1.0, 
+                                        fitness_evaluator=fitness_evaluator)
+            future_2a = executor.submit( evolve_ssga, 
+                                        geno_size=20, 
+                                        max_iterations=400_000, 
+                                        pop_size=25, 
+                                        kt=2, 
+                                        local_search=True,
+                                        crossover_rate=1.0, 
+                                        fitness_evaluator=fitness_evaluator)
+            future_2b = executor.submit( evolve_ssga, 
+                                        geno_size=20, 
+                                        max_iterations=400_000, 
+                                        pop_size=25, 
+                                        kt=2, 
+                                        local_search=True,
+                                        crossover_rate=1.0, 
+                                        fitness_evaluator=fitness_evaluator)
+            result1a = future_1a.result()
+            result1b = future_1b.result()
+            result2a = future_2a.result()
+            result2b = future_2b.result()
+        print(f"Algo #1 Run #{i}\t{result1a}\t{result2a}\t{result1b}\t{result2b}")
+        results1.append(result1a)
+        results1.append(result1b)
+        results1.append(result2a)
+        results1.append(result2b)
+
+
+
+    for i in range(number_of_trials):        
+        with ProcessPoolExecutor(2) as executor:
+            future_1a = executor.submit( evolve_1plus1ga, 
+                                        geno_size=20, 
+                                        max_iterations=400_000, 
+                                        fitness_evaluator=fitness_evaluator)
+            future_1b = executor.submit( evolve_1plus1ga, 
+                                        geno_size=20, 
+                                        max_iterations=400_000, 
+                                        fitness_evaluator=fitness_evaluator)
+            future_2a = executor.submit( evolve_1plus1ga, 
+                                        geno_size=20, 
+                                        max_iterations=400_000, 
+                                        fitness_evaluator=fitness_evaluator)
+            future_2b = executor.submit( evolve_1plus1ga, 
+                                        geno_size=20, 
+                                        max_iterations=400_000, 
+                                        fitness_evaluator=fitness_evaluator)
+            result1a = future_1a.result()
+            result1b = future_1b.result()
+            result2a = future_2a.result()
+            result2b = future_2b.result()
+        print(f"Algo #2 Run #{i}\t{result1a}\t{result2a}\t{result1b}\t{result2b}")
+        results2.append(result1a)
+        results2.append(result1b)
+        results2.append(result2a)
+        results2.append(result2b)
+
+
+
+
+ 
+
+
+
+#-----------------------------------------------------------------        
 
     # SAT
 # NOTE
