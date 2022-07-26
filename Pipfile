@@ -6,8 +6,10 @@ name = "pypi"
 [packages]
 scipy = "*"
 numpy = "*"
+pep517 = "*"
+pysat = "*"
 
 [dev-packages]
 
 [requires]
-python_version = "*"
+python_version = "3.8"
