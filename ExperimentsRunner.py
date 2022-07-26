@@ -35,7 +35,7 @@ if __name__ == '__main__':
                 futures.append(
                     executor.submit(    evolve_1plus1ga, 
                                         geno_size=20, 
-                                        mutation_rate = 0.5,
+                                        mutation_rate = 0.75,
                                         max_iterations=400_000, 
                                         fitness_evaluator=fitness_evaluator))
                     # executor.submit(    evolve_ssga, 
@@ -61,7 +61,7 @@ if __name__ == '__main__':
                     executor.submit(    evolve_1plus1ga, 
                                         geno_size=20, 
                                         max_iterations=400_000,
-                                        mutation_rate=0.75,
+                                        #mutation_rate=None, # means that we reset the solution each time
                                         fitness_evaluator=fitness_evaluator))
             print(f"Started", end='\t')
         results = []

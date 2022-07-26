@@ -6,9 +6,12 @@ from CandidateSolution import CandidateSolution
 
 
 def improve(cs: CandidateSolution, mutation_rate) -> CandidateSolution:
-    rate = mutation_rate
-    mutated = [ (1-x) if random.random() < rate else x for x in cs.genotype ]
-    new_cs = CandidateSolution(genotype=mutated, fitness_evaluator=cs.fitness_evaluator)
+    if mutation_rate:
+        rate = mutation_rate
+        mutated = [ (1-x) if random.random() < rate else x for x in cs.genotype ]
+        new_cs = CandidateSolution(genotype=mutated, fitness_evaluator=cs.fitness_evaluator)
+    else:
+        new_cs = CandidateSolution(length=len(cs.genotype), fitness_evaluator=cs.fitness_evaluator)
     new_cs.evaluate()
     return new_cs if new_cs.fitness > cs.fitness else cs
 

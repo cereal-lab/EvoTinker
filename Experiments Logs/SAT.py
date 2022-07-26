@@ -5,6 +5,87 @@ TODOs
 
 
 
+#-----------------------------------------------------------------        
+# 0.75 mutation rate vs. reset CS at every iteration
+#-----------------------------------------------------------------        
+
+    number_of_cores = 4
+    number_of_trials = 25
+    random.seed(422399)
+    results1 = []
+    results2 = []
+    fitness_evaluator = FitnessEvaluator(sat.evaluate_formula, 91)
+    
+    for i in range(number_of_trials):        
+        print(f"Algo #1 Run #{i}", end='\t')
+        futures = []
+        with ProcessPoolExecutor(4) as executor:
+            for core in range(number_of_cores):
+                futures.append(
+                    executor.submit(    evolve_1plus1ga, 
+                                        geno_size=20, 
+                                        mutation_rate = 0.75,
+                                        max_iterations=400_000, 
+                                        fitness_evaluator=fitness_evaluator))
+            print(f"Started", end='\t')
+        results = []
+        results += [tuple(r.result()) for r in futures]    
+        results1 += [tuple(r) for r in results]
+        print(f"DONE")
+    
+    for i in range(number_of_trials):        
+        print(f"Algo #2 Run #{i}", end='\t')
+        futures = []
+        with ProcessPoolExecutor(4) as executor:
+            for core in range(number_of_cores):
+                futures.append(
+                    executor.submit(    evolve_1plus1ga, 
+                                        geno_size=20, 
+                                        max_iterations=400_000,
+                                        #mutation_rate=None, # means that we reset the solution each time
+                                        fitness_evaluator=fitness_evaluator))
+            print(f"Started", end='\t')
+        results = []
+        for core in range(number_of_cores):
+            results.append(futures[core].result())    
+        results2 += [tuple(r) for r in results]
+        print(f"DONE")
+ 
+# Statistic #0
+#         Series 1 mean = 90.25
+#         Series 2 mean = 90.67
+#         Shapiro:         stat=     0.633, p=     0.000   --> Probably not Gaussian
+#         Student T:       stat=    -6.239, p=     0.000   --> DIFFERENT distributions
+#         Mann-Whitney:    stat=  2967.000, p=     0.000   --> DIFFERENT distribution
+
+
+# Statistic #1
+#         Series 1 mean = 333811.27
+#         Series 2 mean = 235496.76
+#         Shapiro:         stat=     0.581, p=     0.000   --> Probably not Gaussian
+#         Student T:       stat=     5.167, p=     0.000   --> DIFFERENT distributions
+#         Mann-Whitney:    stat=  6994.500, p=     0.000   --> DIFFERENT distribution
+
+
+# Statistic #2
+#         Series 1 mean = 210087.51
+#         Series 2 mean = 32410.68
+#         Shapiro:         stat=     0.684, p=     0.000   --> Probably not Gaussian
+#         Student T:       stat=    19.390, p=     0.000   --> DIFFERENT distributions
+#         Mann-Whitney:    stat=  9173.000, p=     0.000   --> DIFFERENT distribution
+
+
+# Statistic #3
+#         Series 1 mean = 123725.76
+#         Series 2 mean = 203088.08
+#         Shapiro:         stat=     0.760, p=     0.000   --> Probably not Gaussian
+#         Student T:       stat=    -6.452, p=     0.000   --> DIFFERENT distributions
+#         Mann-Whitney:    stat=  3198.000, p=     0.000   --> DIFFERENT distribution
+# ((EvoTinker) ) alessio@Alessios-MBP EvoTinker % 
+
+
+
+
 
 #-----------------------------------------------------------------        
 # different mutations rates just for the local search
