@@ -6,6 +6,104 @@ TODOs
     x   try just the local search alone
 
 #-----------------------------------------------------------------        
+# different mutations rates just for the local search
+#-----------------------------------------------------------------        
+# NOTE
+    
+    number_of_cores = 4
+    number_of_trials = 25
+    random.seed(422399)
+
+    results1 = []
+    results2 = []
+    
+    # SAT
+    fitness_evaluator = FitnessEvaluator(sat.evaluate_formula, 91)
+    
+    for i in range(number_of_trials):        
+        print(f"Algo #1 Run #{i}", end='\t')
+        futures = []
+        with ProcessPoolExecutor(4) as executor:
+            for core in range(number_of_cores):
+                futures.append(
+                    executor.submit(    evolve_1plus1ga, 
+                                        geno_size=20, 
+                                        mutation_rate = 0.5,
+                                        max_iterations=400_000, 
+                                        fitness_evaluator=fitness_evaluator))
+                    # executor.submit(    evolve_ssga, 
+                    #                     geno_size=20, 
+                    #                     max_iterations=400_000, 
+                    #                     pop_size=25, 
+                    #                     kt=2, 
+                    #                     local_search=True,
+                    #                     crossover_rate=1.0, 
+                    #                     fitness_evaluator=fitness_evaluator))
+            print(f"Started", end='\t')
+        results = []
+        for core in range(number_of_cores):
+            results.append(futures[core].result())    
+        results1 += [tuple(r) for r in results]
+        print(f"DONE")
+
+
+    
+    for i in range(number_of_trials):        
+        print(f"Algo #2 Run #{i}", end='\t')
+        futures = []
+        with ProcessPoolExecutor(4) as executor:
+            for core in range(number_of_cores):
+                futures.append(
+                    executor.submit(    evolve_1plus1ga, 
+                                        geno_size=20, 
+                                        max_iterations=400_000,
+                                        mutation_rate=0.75,
+                                        fitness_evaluator=fitness_evaluator))
+            print(f"Started", end='\t')
+        results = []
+        for core in range(number_of_cores):
+            results.append(futures[core].result())    
+        results2 += [tuple(r) for r in results]
+        print(f"DONE")
+ 
+
+
+
+
+
+Statistic #0
+        Series 1 mean = 90.63
+        Series 2 mean = 90.23
+        Shapiro:         stat=     0.611, p=     0.000   --> Probably not Gaussian
+        Student T:       stat=     5.466, p=     0.000   --> DIFFERENT distributions
+        Mann-Whitney:    stat=  6811.000, p=     0.000   --> DIFFERENT distribution
+
+
+Statistic #1
+        Series 1 mean = 239488.41
+        Series 2 mean = 316401.84
+        Shapiro:         stat=     0.855, p=     0.000   --> Probably not Gaussian
+        Student T:       stat=    -3.785, p=     0.000   --> DIFFERENT distributions
+        Mann-Whitney:    stat=  3506.500, p=     0.000   --> DIFFERENT distribution
+
+
+Statistic #2
+        Series 1 mean = 33407.31
+        Series 2 mean = 200895.27
+        Shapiro:         stat=     0.792, p=     0.000   --> Probably not Gaussian
+        Student T:       stat=   -16.206, p=     0.000   --> DIFFERENT distributions
+        Mann-Whitney:    stat=  1278.500, p=     0.000   --> DIFFERENT distribution
+
+
+Statistic #3
+        Series 1 mean = 206083.1
+        Series 2 mean = 115508.57
+        Shapiro:         stat=     0.861, p=     0.000   --> Probably not Gaussian
+        Student T:       stat=     7.192, p=     0.000   --> DIFFERENT distributions
+        Mann-Whitney:    stat=  7230.000, p=     0.000   --> DIFFERENT distribution
+((EvoTinker) ) alessio@Alessios-MBP EvoTinker % 
+
+#-----------------------------------------------------------------        
 # comparing to local search only
 #-----------------------------------------------------------------        
 # NOTE

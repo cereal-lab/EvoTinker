@@ -30,46 +30,46 @@ if __name__ == '__main__':
     for i in range(number_of_trials):        
         print(f"Algo #1 Run #{i}", end='\t')
         futures = []
-        with ProcessPoolExecutor(2) as executor:
-            for core in range(number_of_cores):
-                futures.append(
-                    executor.submit(    evolve_ssga, 
-                                        geno_size=20, 
-                                        max_iterations=400_000, 
-                                        pop_size=25, 
-                                        kt=2, 
-                                        local_search=True,
-                                        crossover_rate=1.0, 
-                                        fitness_evaluator=fitness_evaluator))
-            print(f"Started", end='\t')
-        results = []
-        for core in range(number_of_cores):
-            results = futures[core].result()
-        for core in range(number_of_cores):
-            results1.append(results[core])
-        print(f"DONE")
-
-
-    
-    for i in range(number_of_trials):        
-        print(f"Algo #2 Run #{i}", end='\t')
-        futures = []
-        with ProcessPoolExecutor(2) as executor:
+        with ProcessPoolExecutor(4) as executor:
             for core in range(number_of_cores):
                 futures.append(
                     executor.submit(    evolve_1plus1ga, 
                                         geno_size=20, 
+                                        mutation_rate = 0.5,
                                         max_iterations=400_000, 
+                                        fitness_evaluator=fitness_evaluator))
+                    # executor.submit(    evolve_ssga, 
+                    #                     geno_size=20, 
+                    #                     max_iterations=400_000, 
+                    #                     pop_size=25, 
+                    #                     kt=2, 
+                    #                     local_search=True,
+                    #                     crossover_rate=1.0, 
+                    #                     fitness_evaluator=fitness_evaluator))
+            print(f"Started", end='\t')
+        results = []
+        results += [tuple(r.result()) for r in futures]    
+        results1 += [tuple(r) for r in results]
+        print(f"DONE")
+    
+    for i in range(number_of_trials):        
+        print(f"Algo #2 Run #{i}", end='\t')
+        futures = []
+        with ProcessPoolExecutor(4) as executor:
+            for core in range(number_of_cores):
+                futures.append(
+                    executor.submit(    evolve_1plus1ga, 
+                                        geno_size=20, 
+                                        max_iterations=400_000,
+                                        mutation_rate=0.75,
                                         fitness_evaluator=fitness_evaluator))
             print(f"Started", end='\t')
         results = []
         for core in range(number_of_cores):
-            results = futures[core].result()
-        for core in range(number_of_cores):
-            results2.append(results[core])
+            results.append(futures[core].result())    
+        results2 += [tuple(r) for r in results]
         print(f"DONE")
  
-
 
 
     for stat in range(len(results1[0])):
