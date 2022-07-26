@@ -17,89 +17,58 @@ import sat
 
 if __name__ == '__main__':
     
+    number_of_cores = 4
     number_of_trials = 25
-    results1 = []
-    results2 = []
     random.seed(422399)
 
-
+    results1 = []
+    results2 = []
+    
     # SAT
     fitness_evaluator = FitnessEvaluator(sat.evaluate_formula, 91)
     
     for i in range(number_of_trials):        
+        print(f"Algo #1 Run #{i}", end='\t')
+        futures = []
         with ProcessPoolExecutor(2) as executor:
-            future_1a = executor.submit( evolve_ssga, 
+            for core in range(number_of_cores):
+                futures.append(
+                    executor.submit(    evolve_ssga, 
                                         geno_size=20, 
                                         max_iterations=400_000, 
                                         pop_size=25, 
                                         kt=2, 
                                         local_search=True,
                                         crossover_rate=1.0, 
-                                        fitness_evaluator=fitness_evaluator)
-            future_1b = executor.submit( evolve_ssga, 
-                                        geno_size=20, 
-                                        max_iterations=400_000, 
-                                        pop_size=25, 
-                                        kt=2, 
-                                        local_search=True,
-                                        crossover_rate=1.0, 
-                                        fitness_evaluator=fitness_evaluator)
-            future_2a = executor.submit( evolve_ssga, 
-                                        geno_size=20, 
-                                        max_iterations=400_000, 
-                                        pop_size=25, 
-                                        kt=2, 
-                                        local_search=True,
-                                        crossover_rate=1.0, 
-                                        fitness_evaluator=fitness_evaluator)
-            future_2b = executor.submit( evolve_ssga, 
-                                        geno_size=20, 
-                                        max_iterations=400_000, 
-                                        pop_size=25, 
-                                        kt=2, 
-                                        local_search=True,
-                                        crossover_rate=1.0, 
-                                        fitness_evaluator=fitness_evaluator)
-            result1a = future_1a.result()
-            result1b = future_1b.result()
-            result2a = future_2a.result()
-            result2b = future_2b.result()
-        print(f"Algo #1 Run #{i}\t{result1a}\t{result2a}\t{result1b}\t{result2b}")
-        results1.append(result1a)
-        results1.append(result1b)
-        results1.append(result2a)
-        results1.append(result2b)
+                                        fitness_evaluator=fitness_evaluator))
+            print(f"Started", end='\t')
+        results = []
+        for core in range(number_of_cores):
+            results = futures[core].result()
+        for core in range(number_of_cores):
+            results1.append(results[core])
+        print(f"DONE")
 
 
-
+    
     for i in range(number_of_trials):        
+        print(f"Algo #2 Run #{i}", end='\t')
+        futures = []
         with ProcessPoolExecutor(2) as executor:
-            future_1a = executor.submit( evolve_1plus1ga, 
+            for core in range(number_of_cores):
+                futures.append(
+                    executor.submit(    evolve_1plus1ga, 
                                         geno_size=20, 
                                         max_iterations=400_000, 
-                                        fitness_evaluator=fitness_evaluator)
-            future_1b = executor.submit( evolve_1plus1ga, 
-                                        geno_size=20, 
-                                        max_iterations=400_000, 
-                                        fitness_evaluator=fitness_evaluator)
-            future_2a = executor.submit( evolve_1plus1ga, 
-                                        geno_size=20, 
-                                        max_iterations=400_000, 
-                                        fitness_evaluator=fitness_evaluator)
-            future_2b = executor.submit( evolve_1plus1ga, 
-                                        geno_size=20, 
-                                        max_iterations=400_000, 
-                                        fitness_evaluator=fitness_evaluator)
-            result1a = future_1a.result()
-            result1b = future_1b.result()
-            result2a = future_2a.result()
-            result2b = future_2b.result()
-        print(f"Algo #2 Run #{i}\t{result1a}\t{result2a}\t{result1b}\t{result2b}")
-        results2.append(result1a)
-        results2.append(result1b)
-        results2.append(result2a)
-        results2.append(result2b)
-
+                                        fitness_evaluator=fitness_evaluator))
+            print(f"Started", end='\t')
+        results = []
+        for core in range(number_of_cores):
+            results = futures[core].result()
+        for core in range(number_of_cores):
+            results2.append(results[core])
+        print(f"DONE")
+ 
 
 
 
@@ -137,5 +106,3 @@ if __name__ == '__main__':
         else:
             #print('H0 rejected: samples are from DIFFERENT distribution')
             print('DIFFERENT distribution')
-
-
