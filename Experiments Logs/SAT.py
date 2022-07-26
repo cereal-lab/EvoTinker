@@ -3,7 +3,7 @@ from termios import CS5, TIOCPKT_DOSTOP
 TODOs
     .   try novelty search
     .   try pareto selection of pareto dominant CS
-    .   try just the local search alone
+    x   try just the local search alone
 
 #-----------------------------------------------------------------        
 # comparing to local search only
@@ -13,7 +13,7 @@ TODOs
 #   for local search
 # - need to refactor this junk w/ loops
 
-   number_of_trials = 25
+    number_of_trials = 25
     results1 = []
     results2 = []
     random.seed(422399)
@@ -101,7 +101,36 @@ TODOs
 
  
 
+# Statistic #0
+#         Series 1 mean = 90.57
+#         Series 2 mean = 90.64
+#         Shapiro:         stat=     0.629, p=     0.000   --> Probably not Gaussian
+#         Student T:       stat=    -1.010, p=     0.314   --> SAME distribution
+#         Mann-Whitney:    stat=  4650.000, p=     0.313   --> SAME distribution
 
+
+# Statistic #1
+#         Series 1 mean = 253568.72
+#         Series 2 mean = 238718.86
+#         Shapiro:         stat=     0.811, p=     0.000   --> Probably not Gaussian
+#         Student T:       stat=     0.701, p=     0.484   --> SAME distribution
+#         Mann-Whitney:    stat=  5353.000, p=     0.374   --> SAME distribution
+
+
+# Statistic #2
+#         Series 1 mean = 1141284.28
+#         Series 2 mean = 33712.62
+#         Shapiro:         stat=     0.806, p=     0.000   --> Probably not Gaussian
+#         Student T:       stat=    15.780, p=     0.000   --> DIFFERENT distributions
+#         Mann-Whitney:    stat=  9675.000, p=     0.000   --> DIFFERENT distribution
+
+
+# Statistic #3
+#         Series 1 mean = 380159.04
+#         Series 2 mean = 205008.24
+#         Shapiro:         stat=     0.822, p=     0.000   --> Probably not Gaussian
+#         Student T:       stat=     7.563, p=     0.000   --> DIFFERENT distributions
+#         Mann-Whitney:    stat=  7380.000, p=     0.000   --> DIFFERENT distribution
 
 #-----------------------------------------------------------------        
 
