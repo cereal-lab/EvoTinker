@@ -15,6 +15,8 @@ TODOs
 # NOTE 
 # - less iterations needed + better solution achieved
 # - way less hits and more uniques (i.e., misses)
+# - hits + uniques are < for the rset-based local search which makes
+#   sense w/r to # of iterations also being lower
 # Interpretation
 #   does more uniques means better search
 
