@@ -2,12 +2,21 @@ TODOs
     .   try novelty search
     .   try pareto selection of pareto dominant CS
     x   try just the local search alone
+    .   paper: need to look at not just iterations but unique hits
+        e.g., see [*] experiment
 
 
 
 #-----------------------------------------------------------------        
 # 0.75 mutation rate vs. reset CS at every iteration
 #-----------------------------------------------------------------        
+# [*] --> need to look at not just iterations but also hits / misses
+#           on the fitness cache
+# NOTE 
+# - less iterations needed + better solution achieved
+# - way less hits and more uniques (i.e., misses)
+# Interpretation
+#   does more uniques means better search
 
     number_of_cores = 4
     number_of_trials = 25
