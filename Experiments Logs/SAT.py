@@ -5,8 +5,94 @@ TODOs
     .   paper: need to look at not just iterations but unique hits
         e.g., see [*] experiment
 
+#-----------------------------------------------------------------        
+# reset vs. reset + tabu
+#-----------------------------------------------------------------        
+# --> no differences in terms of quality of solution 
+# more uniques points considered by tabu reset but same # of iterations
+
+    number_of_cores = 4
+    number_of_trials = 25
+    random.seed(422399)
+    results1 = []
+    results2 = []
+    fitness_evaluator = FitnessEvaluator(sat.evaluate_formula, 91)
+
+    for i in range(number_of_trials):        
+        print(f"Algo #1 Run #{i}", end='\t')
+        futures = []
+        with ProcessPoolExecutor(4) as executor:
+            for core in range(number_of_cores):
+                futures.append(
+                    executor.submit(    evolve_1plus1ga, 
+                                        geno_size=20, 
+                                        mutation_rate = 0.75,
+                                        max_iterations=400_000, 
+                                        improve_method="by_tabu_reset",
+                                        fitness_evaluator=fitness_evaluator))
+            print(f"Started", end='\t')
+        results = []
+        results += [tuple(r.result()) for r in futures]    
+        results1 += [tuple(r) for r in results]
+        print(f"DONE")
+    
+    for i in range(number_of_trials):        
+        print(f"Algo #2 Run #{i}", end='\t')
+        futures = []
+        with ProcessPoolExecutor(4) as executor:
+            for core in range(number_of_cores):
+                futures.append(
+                    executor.submit(    evolve_1plus1ga, 
+                                        geno_size=20, 
+                                        mutation_rate=0.75,
+                                        max_iterations=400_000, 
+                                        improve_method="by_reset",
+                                        fitness_evaluator=fitness_evaluator))
+            print(f"Started", end='\t')
+        results = []
+        for core in range(number_of_cores):
+            results.append(futures[core].result())    
+        results2 += [tuple(r) for r in results]
+        print(f"DONE")
+ 
 
 
+
+
+
+Statistic #0
+        Series 1 mean = 90.71
+        Series 2 mean = 90.66
+        Shapiro:         stat=     0.569, p=     0.000   --> Probably not Gaussian
+        Student T:       stat=     0.758, p=     0.449   --> SAME distribution
+        Mann-Whitney:    stat=  5250.000, p=     0.449   --> SAME distribution
+
+
+Statistic #1
+        Series 1 mean = 235238.57
+        Series 2 mean = 234344.16
+        Shapiro:         stat=     0.881, p=     0.000   --> Probably not Gaussian
+        Student T:       stat=     0.043, p=     0.966   --> SAME distribution
+        Mann-Whitney:    stat=  5000.000, p=     1.000   --> SAME distribution
+
+
+Statistic #2
+        Series 1 mean = 0.0
+        Series 2 mean = 33190.84
+/Users/alessio/.local/share/virtualenvs/EvoTinker-vWdniWIs/lib/python3.8/site-packages/scipy/stats/_morestats.py:1758: UserWarning: Input data for shapiro has range zero. The results may not be accurate.
+  warnings.warn("Input data for shapiro has range zero. The results "
+        Shapiro:         stat=     1.000, p=     1.000   --> Probably Gaussian
+        Student T:       stat=   -11.578, p=     0.000   --> DIFFERENT distributions
+        Mann-Whitney:    stat=    50.000, p=     0.000   --> DIFFERENT distribution
+
+
+Statistic #3
+        Series 1 mean = 235240.57
+        Series 2 mean = 201155.32
+        Shapiro:         stat=     0.881, p=     0.000   --> Probably not Gaussian
+        Student T:       stat=     1.824, p=     0.070   --> SAME distribution
+        Mann-Whitney:    stat=  5841.000, p=     0.040   --> DIFFERENT distribution
+((EvoTinker) ) alessio@Alessios-MBP EvoTinker %  
 #-----------------------------------------------------------------        
 # 0.75 mutation rate vs. reset CS at every iteration
 #-----------------------------------------------------------------        

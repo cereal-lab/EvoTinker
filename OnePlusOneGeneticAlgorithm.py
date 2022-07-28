@@ -5,24 +5,42 @@ from CandidateSolution import CandidateSolution
 
 
 
-def improve(cs: CandidateSolution, mutation_rate) -> CandidateSolution:
-    if mutation_rate:
-        rate = mutation_rate
-        mutated = [ (1-x) if random.random() < rate else x for x in cs.genotype ]
-        new_cs = CandidateSolution(genotype=mutated, fitness_evaluator=cs.fitness_evaluator)
-    else:
-        new_cs = CandidateSolution(length=len(cs.genotype), fitness_evaluator=cs.fitness_evaluator)
+def improve_by_mutation(cs: CandidateSolution, mutation_rate) -> CandidateSolution:
+    rate = mutation_rate
+    mutated = [ (1-x) if random.random() < rate else x for x in cs.genotype ]
+    new_cs = CandidateSolution(genotype=mutated, fitness_evaluator=cs.fitness_evaluator)
+    new_cs.evaluate()
+    return new_cs if new_cs.fitness > cs.fitness else cs
+
+def improve_by_reset(cs: CandidateSolution, mutation_rate) -> CandidateSolution:
+    new_cs = CandidateSolution(length=len(cs.genotype), fitness_evaluator=cs.fitness_evaluator)
+    new_cs.evaluate()
+    return new_cs if new_cs.fitness > cs.fitness else cs
+
+def improve_by_tabu_reset(cs: CandidateSolution, mutation_rate) -> CandidateSolution:
+    fiteval = cs.fitness_evaluator
+    keep_going = True
+    while keep_going: 
+        #print(".", end="")
+        new_cs = CandidateSolution(length=len(cs.genotype), fitness_evaluator=fiteval)
+        key = tuple(new_cs.genotype)
+        if key not in fiteval.fitness_cache.keys():
+            break
+    #print()
     new_cs.evaluate()
     return new_cs if new_cs.fitness > cs.fitness else cs
 
 
-
-
-def evolve( max_iterations, geno_size, mutation_rate=None, fitness_evaluator=None):  
+def evolve( max_iterations, geno_size, improve_method=None, mutation_rate=None, fitness_evaluator=None):  
     cs = CandidateSolution(geno_size, fitness_evaluator=fitness_evaluator)
     cs.evaluate()
     for iteration in range(max_iterations):
-        cs = improve(cs, mutation_rate)
+        if improve_method == "by_reset": 
+            cs = improve_by_reset(cs, mutation_rate)
+        elif improve_method == "by_mutation":
+            cs = improve_by_mutation(cs, mutation_rate)
+        elif improve_method == "by_tabu_reset":
+            cs = improve_by_tabu_reset(cs, mutation_rate)
         if cs.fitness >= fitness_evaluator.max_fitness:
             break
     cache_usage = fitness_evaluator.report_cache_usage()
