@@ -1,6 +1,5 @@
 from FitnessEvaluator import FitnessEvaluator
 from SteadyStateGeneticAlgorithm import evolve as evolve_ssga
-from DualSSGA import evolve as evolve_dssga
 from OnePlusOneGeneticAlgorithm import evolve as evolve_1plus1ga
 from scipy.stats import mannwhitneyu, shapiro, ttest_ind
 import numpy
