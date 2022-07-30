@@ -34,13 +34,14 @@ def improve_by_tabu_reset(cs: CandidateSolution, mutation_rate) -> CandidateSolu
 def evolve( max_iterations, geno_size, improve_method=None, mutation_rate=None, fitness_evaluator=None):  
     cs = CandidateSolution(geno_size, fitness_evaluator=fitness_evaluator)
     cs.evaluate()
+    improve_functions = { 
+        "by_reset":         improve_by_reset,
+        "by_mutation":      improve_by_mutation,
+        "by_tabu_reset":    improve_by_tabu_reset
+    }
+    improve = improve_functions[improve_method]
     for iteration in range(max_iterations):
-        if improve_method == "by_reset": 
-            cs = improve_by_reset(cs, mutation_rate)
-        elif improve_method == "by_mutation":
-            cs = improve_by_mutation(cs, mutation_rate)
-        elif improve_method == "by_tabu_reset":
-            cs = improve_by_tabu_reset(cs, mutation_rate)
+        cs = improve(cs, mutation_rate)
         if cs.fitness >= fitness_evaluator.max_fitness:
             break
     cache_usage = fitness_evaluator.report_cache_usage()
