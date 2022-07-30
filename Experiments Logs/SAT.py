@@ -6,6 +6,68 @@ TODOs
         e.g., see [*] experiment
 
 #-----------------------------------------------------------------        
+# SSGA vs. Dual SSGA w/o mirroring
+#-----------------------------------------------------------------        
+# ---> no differences
+# 
+                    executor.submit(    evolve_dssga, 
+                                        geno_size=20, 
+                                        max_iterations=400_000, 
+                                        pop_size=25, 
+                                        kt=2, 
+                                        local_search=True,
+                                        crossover_rate=1.0, 
+                                        fitness_evaluator=fitness_evaluator))
+
+                    executor.submit(    evolve_ssga, 
+                                        geno_size=20, 
+                                        max_iterations=400_000, 
+                                        pop_size=25, 
+                                        kt=2, 
+                                        local_search=True,
+                                        crossover_rate=1.0, 
+                                        fitness_evaluator=fitness_evaluator))
+
+
+
+
+
+Statistic #0
+        Series 1 mean = 90.5
+        Series 2 mean = 90.5
+        Shapiro:         stat=     0.636, p=     0.000   --> Probably not Gaussian
+        Student T:       stat=     0.000, p=     1.000   --> SAME distribution
+        Mann-Whitney:    stat=  5000.000, p=     1.000   --> SAME distribution
+
+
+Statistic #1
+        Series 1 mean = 276391.69
+        Series 2 mean = 284012.4
+        Shapiro:         stat=     0.754, p=     0.000   --> Probably not Gaussian
+        Student T:       stat=    -0.362, p=     0.718   --> SAME distribution
+        Mann-Whitney:    stat=  4945.000, p=     0.887   --> SAME distribution
+
+
+Statistic #2
+        Series 1 mean = 1249601.66
+        Series 2 mean = 1286850.72
+        Shapiro:         stat=     0.754, p=     0.000   --> Probably not Gaussian
+        Student T:       stat=    -0.378, p=     0.706   --> SAME distribution
+        Mann-Whitney:    stat=  4513.500, p=     0.235   --> SAME distribution
+
+
+Statistic #3
+        Series 1 mean = 408779.48
+        Series 2 mean = 417254.68
+        Shapiro:         stat=     0.753, p=     0.000   --> Probably not Gaussian
+        Student T:       stat=    -0.303, p=     0.762   --> SAME distribution
+        Mann-Whitney:    stat=  5343.500, p=     0.402   --> SAME distribution
+((EvoTinker) ) alessio@VPN-159-80 EvoTinker % 
+
+
+
+
+#-----------------------------------------------------------------        
 # reset vs. reset + tabu
 #-----------------------------------------------------------------        
 # --> no differences in terms of quality of solution 

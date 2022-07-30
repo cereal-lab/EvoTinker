@@ -1,7 +1,12 @@
+from CandidateSolution import DualCandidateSolution as CandidateSolution
+
+
+
+# below is from SteadyStateGeneticAlgorithm.py
 import random
 import numpy
 from FitnessEvaluator import FitnessEvaluator
-from CandidateSolution import CandidateSolution
+
 
 
 
