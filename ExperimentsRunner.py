@@ -34,20 +34,20 @@ if __name__ == '__main__':
         with ProcessPoolExecutor(4) as executor:
             for core in range(number_of_cores):
                 futures.append(
-                    # executor.submit(    evolve_1plus1ga, 
-                    #                     geno_size=20, 
-                    #                     mutation_rate = 0.75,
-                    #                     max_iterations=400_000, 
-                    #                     improve_method="by_tabu_reset",
-                    #                     fitness_evaluator=fitness_evaluator))
-                    executor.submit(    evolve_dssga, 
+                    executor.submit(    evolve_1plus1ga, 
                                         geno_size=20, 
+                                        mutation_rate = 0.75,
                                         max_iterations=400_000, 
-                                        pop_size=25, 
-                                        kt=2, 
-                                        local_search=True,
-                                        crossover_rate=1.0, 
+                                        improve_method="by_tabu_reset",
                                         fitness_evaluator=fitness_evaluator))
+                    # executor.submit(    evolve_dssga, 
+                    #                     geno_size=20, 
+                    #                     max_iterations=400_000, 
+                    #                     pop_size=25, 
+                    #                     kt=2, 
+                    #                     local_search=True,
+                    #                     crossover_rate=1.0, 
+                    #                     fitness_evaluator=fitness_evaluator))
             print(f"Started", end='\t')
         results = []
         results += [tuple(r.result()) for r in futures]    
@@ -60,20 +60,20 @@ if __name__ == '__main__':
         with ProcessPoolExecutor(4) as executor:
             for core in range(number_of_cores):
                 futures.append(
-                    # executor.submit(    evolve_1plus1ga, 
-                    #                     geno_size=20, 
-                    #                     mutation_rate=0.75,
-                    #                     max_iterations=400_000, 
-                    #                     improve_method="by_reset",
-                    #                     fitness_evaluator=fitness_evaluator))
-                    executor.submit(    evolve_ssga, 
+                    executor.submit(    evolve_1plus1ga, 
                                         geno_size=20, 
+                                        mutation_rate=0.75,
                                         max_iterations=400_000, 
-                                        pop_size=25, 
-                                        kt=2, 
-                                        local_search=True,
-                                        crossover_rate=1.0, 
+                                        improve_method="by_reset",
                                         fitness_evaluator=fitness_evaluator))
+                    # executor.submit(    evolve_ssga, 
+                    #                     geno_size=20, 
+                    #                     max_iterations=400_000, 
+                    #                     pop_size=25, 
+                    #                     kt=2, 
+                    #                     local_search=True,
+                    #                     crossover_rate=1.0, 
+                    #                     fitness_evaluator=fitness_evaluator))
             print(f"Started", end='\t')
         results = []
         for core in range(number_of_cores):
