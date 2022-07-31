@@ -1,10 +1,11 @@
-from FitnessEvaluator import FitnessEvaluator
+from FitnessEvaluator import FitnessEvaluator, DualFitnessEvaluator
 from SteadyStateGeneticAlgorithm import evolve as evolve_ssga
 from OnePlusOneGeneticAlgorithm import evolve as evolve_1plus1ga
 from scipy.stats import mannwhitneyu, shapiro, ttest_ind
 import numpy
 import random
 from concurrent.futures import ProcessPoolExecutor
+import timeit
 
 def OneMax(genotype):
     return sum(genotype)
@@ -24,9 +25,12 @@ if __name__ == '__main__':
     results1 = []
     results2 = []
     
-    # SAT
     fitness_evaluator = FitnessEvaluator(sat.evaluate_formula, 91)
+    dual_fitness_evaluator = DualFitnessEvaluator(sat.evaluate_formula, 91)
     
+
+    start1 = timeit.default_timer()
+
     for i in range(number_of_trials):        
         print(f"Algo #1 Run #{i}", end='\t')
         futures = []
@@ -34,11 +38,11 @@ if __name__ == '__main__':
             for core in range(number_of_cores):
                 futures.append(
                     executor.submit(    evolve_1plus1ga, 
-                                        geno_size=20, 
+                                        geno_size=21, 
                                         mutation_rate = 0.75,
                                         max_iterations=400_000, 
-                                        improve_method="by_tabu_reset",
-                                        fitness_evaluator=fitness_evaluator))
+                                        improve_method="by_reset",
+                                        fitness_evaluator=dual_fitness_evaluator))
                     # executor.submit(    evolve_dssga, 
                     #                     geno_size=20, 
                     #                     max_iterations=400_000, 
@@ -53,6 +57,10 @@ if __name__ == '__main__':
         results1 += [tuple(r) for r in results]
         print(f"DONE")
     
+    stop1 = timeit.default_timer()
+
+    start2 = timeit.default_timer()
+
     for i in range(number_of_trials):        
         print(f"Algo #2 Run #{i}", end='\t')
         futures = []
@@ -80,11 +88,9 @@ if __name__ == '__main__':
         results2 += [tuple(r) for r in results]
         print(f"DONE")
  
-
+    stop2 = timeit.default_timer()
 
     for stat in range(len(results1[0])):
-        #series1 = [r for (_, r, _, _) in results1]
-        #series2 = [r for (_, r, _, _) in results2]
         series1 = [r[stat] for r in results1]
         series2 = [r[stat] for r in results2]
         print(f"\n\nStatistic #{stat}")
@@ -116,3 +122,7 @@ if __name__ == '__main__':
         else:
             #print('H0 rejected: samples are from DIFFERENT distribution')
             print('DIFFERENT distribution')
+
+
+    print("Run #1 duration =", stop1-start1)
+    print("Run #2 duration =", stop2-start2)

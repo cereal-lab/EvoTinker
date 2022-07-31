@@ -15,8 +15,6 @@ def recombine(p1: CandidateSolution, p2: CandidateSolution, rate=None):
                 for i in range(len(mask))]
             os1 = CandidateSolution(genotype=os1, fitness_evaluator=p1.fitness_evaluator)
             os2 = CandidateSolution(genotype=os2, fitness_evaluator=p2.fitness_evaluator)
-            #os1.evaluate()
-            #os2.evaluate()
             return os1,os2
     else:
         return p1, p2
@@ -29,7 +27,6 @@ def mutate(cs: CandidateSolution, rate=None) -> CandidateSolution:
         rate = 1/len(cs.genotype)
     new_geno = [ (1-x) if random.random() < rate else x for x in cs.genotype ]
     new_cs = CandidateSolution(genotype=new_geno, fitness_evaluator= cs.fitness_evaluator)
-    #new_cs.evaluate()
     return new_cs
 
 
@@ -118,7 +115,6 @@ def select_pareto(p: list, kt=2):
 
     
 def diversify_random_immigrant(p: list, fitness_evaluator: FitnessEvaluator):
-    #random immigrant wannabe below:
     for _ in range(len(p) // 5):
         new_cs = CandidateSolution(len(p[0].genotype), fitness_evaluator=fitness_evaluator)
         new_cs.evaluate()
@@ -126,7 +122,6 @@ def diversify_random_immigrant(p: list, fitness_evaluator: FitnessEvaluator):
     return p
     
 def diversify_cached_random_immigrant(p: list, fitness_evaluator: FitnessEvaluator):
-    # cached random immigrant below:
     for i in range(len(p) // 5):
         rnd_geno = list(random.choice(list(fitness_evaluator.fitness_cache)))
         print(f"Immigrant #{i}\t{rnd_geno}")
@@ -187,11 +182,6 @@ def evolve( max_iterations, pop_size, kt, geno_size,
             break
 
     cache_usage = fitness_evaluator.report_cache_usage()
-    #print(fitness_evaluator.fitness_cache)
     fitness_evaluator.zero_cache_usage()
     return (best.fitness, iteration) + cache_usage
-
-
-
-
 
