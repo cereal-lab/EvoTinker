@@ -18,18 +18,19 @@ def recombine(p1: CandidateSolution, p2: CandidateSolution, rate=None):
 
 
 
-def cached_recombination(cs: CandidateSolution, rate) -> CandidateSolution:
+def cached_recombination(cs: CandidateSolution, rate=1.0, kt_size=2) -> CandidateSolution:
     # dig in the cache for 2 parents, perform Xc, keep best child if it beat original
+    
     fiteval = cs.fitness_evaluator
     cache_as_list = list(fiteval.fitness_cache)
     #print("Cache is ", len(cache_as_list))
-    if len(cache_as_list) < 2: 
+    if len(cache_as_list) < kt_size: 
         #print("Not enough data in cache")
         return cs
-    pool1 = random.sample(cache_as_list, 2)
+    pool1 = random.sample(cache_as_list, kt_size)
     p1 = max(pool1, key=lambda genotype: fiteval.fitness_cache[tuple(genotype)])
     
-    pool2 = random.sample(cache_as_list, 2)
+    pool2 = random.sample(cache_as_list, kt_size)
     p2 = max(pool2, key=lambda genotype: fiteval.fitness_cache[tuple(genotype)])
     
     cs1 = CandidateSolution( genotype=p1, fitness_evaluator=fiteval)
@@ -73,8 +74,11 @@ def improve_by_tabu_reset(cs: CandidateSolution, mutation_rate) -> CandidateSolu
     return new_cs if new_cs.fitness > cs.fitness else cs
 
 
-def evolve( max_iterations, geno_size, improve_method=None, mutation_rate=None, fitness_evaluator=None, 
-            recombination=False):  
+def evolve( max_iterations, geno_size, 
+            improve_method=None, 
+            mutation_rate=None, 
+            fitness_evaluator=None, 
+            recombination=None):  
     cs = CandidateSolution(geno_size, fitness_evaluator=fitness_evaluator)
     cs.evaluate()
     improve_functions = { 
@@ -86,8 +90,8 @@ def evolve( max_iterations, geno_size, improve_method=None, mutation_rate=None, 
     for iteration in range(max_iterations):
         #print(iteration)
         cs = improve(cs, mutation_rate)
-        if recombination:
-            cs = cached_recombination(cs, 1.0)
+        if recombination is not None:
+            cs = cached_recombination(cs, rate=1.0, kt_size=recombination)
         if cs.fitness >= fitness_evaluator.max_fitness:
             break
     #print("------------")

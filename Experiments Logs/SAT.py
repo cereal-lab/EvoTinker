@@ -6,6 +6,127 @@ TODOs
         e.g., see [*] experiment
 
 #-----------------------------------------------------------------        
+# cached recombination or not
+#-----------------------------------------------------------------        
+# --->  same but with kt_size=10
+    number_of_cores = 4
+    number_of_trials = 25
+    random.seed(422399)
+    fitness_evaluator = FitnessEvaluator(sat.evaluate_formula, 91)
+                    executor.submit(    evolve_1plus1ga, 
+                                        geno_size=20, 
+                                        #mutation_rate = 0.75,
+                                        max_iterations=40_000, 
+                                        improve_method="by_reset",
+                                        recombination=10,
+                                        fitness_evaluator=fitness_evaluator))
+                    executor.submit(    evolve_1plus1ga, 
+                                        geno_size=20, 
+                                        #mutation_rate=0.75,
+                                        max_iterations=40_000, 
+                                        improve_method="by_reset",
+                                        #recombination=10,
+                                        fitness_evaluator=fitness_evaluator))
+
+
+
+Statistic #0
+        Series 1 mean = 90.27
+        Series 2 mean = 89.75
+        Shapiro:         stat=     0.715, p=     0.000   --> Probably not Gaussian
+        Student T:       stat=     5.996, p=     0.000   --> DIFFERENT distributions
+        Mann-Whitney:    stat=  7024.500, p=     0.000   --> DIFFERENT distribution
+
+
+Statistic #1
+        Series 1 mean = 33135.46
+        Series 2 mean = 38163.59
+        Shapiro:         stat=     0.631, p=     0.000   --> Probably not Gaussian
+        Student T:       stat=    -3.888, p=     0.000   --> DIFFERENT distributions
+        Mann-Whitney:    stat=  3979.000, p=     0.001   --> DIFFERENT distribution
+
+
+Statistic #2
+        Series 1 mean = 5939.91
+        Series 2 mean = 695.19
+        Shapiro:         stat=     0.679, p=     0.000   --> Probably not Gaussian
+        Student T:       stat=    19.578, p=     0.000   --> DIFFERENT distributions
+        Mann-Whitney:    stat=  9140.500, p=     0.000   --> DIFFERENT distribution
+
+
+Statistic #3
+        Series 1 mean = 93454.47
+        Series 2 mean = 37470.4
+        Shapiro:         stat=     0.632, p=     0.000   --> Probably not Gaussian
+        Student T:       stat=    16.743, p=     0.000   --> DIFFERENT distributions
+        Mann-Whitney:    stat=  8850.000, p=     0.000   --> DIFFERENT distribution
+Run #1 duration = 2043.159601667
+Run #2 duration = 116.86238158300011
+((EvoTinker) ) alessio@Alessios-MBP EvoTinker % 
+# 
+# 
+# #-----------------------------------------------------------------        
+# cached recombination or not
+#-----------------------------------------------------------------        
+# --->  do kt=2 selection in cache, Xc, then keep the best of 
+#       offsprings or original
+
+
+    number_of_cores = 4
+    number_of_trials = 25
+    random.seed(422399)
+    fitness_evaluator = FitnessEvaluator(sat.evaluate_formula, 91)
+    executor.submit(    evolve_1plus1ga, 
+                    geno_size=20, 
+                    #mutation_rate = 0.75,
+                    max_iterations=40_000, 
+                    improve_method="by_reset",
+                    recombination=True,
+                    fitness_evaluator=fitness_evaluator))
+    executor.submit(    evolve_1plus1ga, 
+                    geno_size=20, 
+                    mutation_rate=0.75,
+                    max_iterations=40_000, 
+                    improve_method="by_reset",
+                    recombination=False,
+                    fitness_evaluator=fitness_evaluator))
+
+
+
+Statistic #0
+        Series 1 mean = 90.24
+        Series 2 mean = 89.7
+        Shapiro:         stat=     0.736, p=     0.000   --> Probably not Gaussian
+        Student T:       stat=     6.457, p=     0.000   --> DIFFERENT distributions
+        Mann-Whitney:    stat=  7139.000, p=     0.000   --> DIFFERENT distribution
+
+
+Statistic #1
+        Series 1 mean = 33565.75
+        Series 2 mean = 38247.61
+        Shapiro:         stat=     0.626, p=     0.000   --> Probably not Gaussian
+        Student T:       stat=    -3.585, p=     0.000   --> DIFFERENT distributions
+        Mann-Whitney:    stat=  3853.000, p=     0.000   --> DIFFERENT distribution
+
+
+Statistic #2
+        Series 1 mean = 5701.45
+        Series 2 mean = 707.1
+        Shapiro:         stat=     0.646, p=     0.000   --> Probably not Gaussian
+        Student T:       stat=    19.649, p=     0.000   --> DIFFERENT distributions
+        Mann-Whitney:    stat=  9276.000, p=     0.000   --> DIFFERENT distribution
+
+
+Statistic #3
+        Series 1 mean = 94999.8
+        Series 2 mean = 37542.51
+        Shapiro:         stat=     0.627, p=     0.000   --> Probably not Gaussian
+        Student T:       stat=    18.048, p=     0.000   --> DIFFERENT distributions
+        Mann-Whitney:    stat=  8869.000, p=     0.000   --> DIFFERENT distribution
+Run #1 duration = 2056.5063291660003
+Run #2 duration = 117.58041145900006
+((EvoTinker) ) alessio@Alessios-MBP EvoTinker % 
+#-----------------------------------------------------------------        
 # SSGA vs. Dual SSGA w/o mirroring
 #-----------------------------------------------------------------        
 # ---> no differences
