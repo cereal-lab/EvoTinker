@@ -22,7 +22,9 @@ def cached_recombination(cs: CandidateSolution, rate) -> CandidateSolution:
     # dig in the cache for 2 parents, perform Xc, keep best child if it beat original
     fiteval = cs.fitness_evaluator
     cache_as_list = list(fiteval.fitness_cache)
+    #print("Cache is ", len(cache_as_list))
     if len(cache_as_list) < 2: 
+        #print("Not enough data in cache")
         return cs
     pool1 = random.sample(cache_as_list, 2)
     p1 = max(pool1, key=lambda genotype: fiteval.fitness_cache[tuple(genotype)])
@@ -39,10 +41,11 @@ def cached_recombination(cs: CandidateSolution, rate) -> CandidateSolution:
     os1.evaluate()
     os2.evaluate()
     # the cache is our population, similar to archives
-    alls = [cs, cs1, cs2, os1, os2]
+    alls = [cs, os1, os2] # NOTE do not include cs1 cs2
     best = max(alls, key=lambda item: item.fitness)
-    return best if best.fitness >= cs.fitness else cs
-
+    best =  best if best.fitness >= cs.fitness else cs
+    #print("Best is ", best.genotype)
+    return best
 
 def improve_by_mutation(cs: CandidateSolution, mutation_rate) -> CandidateSolution:
     rate = mutation_rate
