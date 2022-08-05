@@ -26,7 +26,7 @@ if __name__ == '__main__':
     results2 = []
     
     fitness_evaluator = FitnessEvaluator(sat.evaluate_formula, 91)
-    dual_fitness_evaluator = DualFitnessEvaluator(sat.evaluate_formula, 91)
+    #dual_fitness_evaluator = DualFitnessEvaluator(sat.evaluate_formula, 91)
     
 
     start1 = timeit.default_timer()
@@ -38,11 +38,12 @@ if __name__ == '__main__':
             for core in range(number_of_cores):
                 futures.append(
                     executor.submit(    evolve_1plus1ga, 
-                                        geno_size=21, 
-                                        mutation_rate = 0.75,
+                                        geno_size=20, 
+                                        #mutation_rate = 0.75,
                                         max_iterations=400_000, 
                                         improve_method="by_reset",
-                                        fitness_evaluator=dual_fitness_evaluator))
+                                        recombination=True,
+                                        fitness_evaluator=fitness_evaluator))
                     # executor.submit(    evolve_dssga, 
                     #                     geno_size=20, 
                     #                     max_iterations=400_000, 
@@ -72,6 +73,7 @@ if __name__ == '__main__':
                                         mutation_rate=0.75,
                                         max_iterations=400_000, 
                                         improve_method="by_reset",
+                                        recombination=False,
                                         fitness_evaluator=fitness_evaluator))
                     # executor.submit(    evolve_ssga, 
                     #                     geno_size=20, 
