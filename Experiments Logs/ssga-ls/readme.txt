@@ -1,4 +1,5 @@
 
+Run duration = 1004.1027655409998
 
                     executor.submit(    evolve_ssga, 
                                         geno_size=20, 

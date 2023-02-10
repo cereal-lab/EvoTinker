@@ -34,8 +34,8 @@ def mutate(cs: CandidateSolution, rate=None) -> CandidateSolution:
 def improve(cs: CandidateSolution) -> CandidateSolution:
     if cs.fitness is None:
         cs.evaluate()
-    #rate = 1/len(cs.genotype)
-    rate = 0.5
+    rate = 1/len(cs.genotype)
+    #rate = 0.5
     mutated = [ (1-x) if random.random() < rate else x for x in cs.genotype ]
     new_cs = CandidateSolution(genotype=mutated, fitness_evaluator=cs.fitness_evaluator)
     new_cs.evaluate()

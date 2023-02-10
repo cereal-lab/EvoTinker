@@ -49,7 +49,7 @@ if __name__ == '__main__':
                                         max_iterations=400_000, 
                                         pop_size=25, 
                                         kt=2, 
-                                        local_search=True,
+                                        #local_search=True,
                                         crossover_rate=1.0, 
                                         #random_immigrant=False,
                                         pareto_select=True,

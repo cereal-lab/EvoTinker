@@ -11,7 +11,7 @@ f2_core = sys.argv[2]
 
 for i in range(4):
     root = 'Experiments Logs/'
-    suffix = f'stat{i}.pickle'
+    suffix = f'/stat{i}.pickle'
     f1_name = root + f1_core + suffix
     f2_name = root + f2_core + suffix
 
