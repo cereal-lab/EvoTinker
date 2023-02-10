@@ -46,7 +46,7 @@ Statistic #1
         Mann-Whitney:    stat=  3979.000, p=     0.001   --> DIFFERENT distribution
 
 
-Statistic #2
+Sttistic #2
         Series 1 mean = 5939.91
         Series 2 mean = 695.19
         Shapiro:         stat=     0.679, p=     0.000   --> Probably not Gaussian
