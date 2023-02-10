@@ -22,7 +22,8 @@ file1.close()
 
 def evaluate_formula(genotype: list):
 
-    genotype = [random.randint(0,1) for _ in range(20)]
+    #WTF 
+    #genotype = [random.randint(0,1) for _ in range(20)]
 
     evaluation = [None for _ in range(len(formula))]
 

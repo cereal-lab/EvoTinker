@@ -6,15 +6,14 @@ import numpy
 
 #f1_name = input('File #1 - name: ')
 #f2_name = input('File #2 - name: ')
-#f1_name = sys.argv[1]
-#f2_name = sys.argv[2]
+f1_core = sys.argv[1]
+f2_core = sys.argv[2]
+
 for i in range(4):
     root = 'Experiments Logs/'
-    f1_name = root + 'OnePlusOneGA-with-recombination/'
-    f2_name = root + 'OnePlusOneGA-without-recombination/'
     suffix = f'stat{i}.pickle'
-    f1_name += suffix
-    f2_name += suffix
+    f1_name = root + f1_core + suffix
+    f2_name = root + f2_core + suffix
 
     with open(f1_name, 'rb') as f:
         series1 = pickle.load(f)
