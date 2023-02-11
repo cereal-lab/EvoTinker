@@ -122,7 +122,7 @@ def diversify_random_immigrant(p: list, fitness_evaluator: FitnessEvaluator):
     return p
     
 def diversify_cached_random_immigrant(p: list, fitness_evaluator: FitnessEvaluator):
-    for i in range(len(p) // 10):
+    for i in range(len(p) // 4):
         rnd_geno = list(random.choice(list(fitness_evaluator.fitness_cache)))
         #print(f"Immigrant #{i}\t{rnd_geno}")
         new_cs = CandidateSolution( genotype=rnd_geno, 
