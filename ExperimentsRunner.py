@@ -47,11 +47,11 @@ if __name__ == '__main__':
                     executor.submit(    evolve_ssga, 
                                         geno_size=20, 
                                         max_iterations=400_000, 
-                                        pop_size=25, 
+                                        pop_size=50, #25, 
                                         kt=2, 
                                         #local_search=True,
                                         crossover_rate=1.0, 
-                                        random_immigrant=True,
+                                        #random_immigrant=True,
                                         pareto_select=True,
                                         #mutation_rate=0.50, 
                                         fitness_evaluator=fitness_evaluator))
