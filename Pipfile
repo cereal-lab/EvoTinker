@@ -9,6 +9,7 @@ numpy = "*"
 pep517 = "*"
 
 [dev-packages]
+autopep8 = "*"
 
 [requires]
 python_version = "3.8"

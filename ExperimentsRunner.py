@@ -14,7 +14,7 @@ def OneMax(genotype):
 def ZeroMax(genotype):
     return len(genotype) - sum(genotype)
 
-import sat
+import FitnessSAT
 
 
 if __name__ == '__main__':
@@ -25,8 +25,8 @@ if __name__ == '__main__':
 
     results1 = []
     
-    fitness_evaluator = FitnessEvaluator(sat.evaluate_formula, 91)
-    #dual_fitness_evaluator = DualFitnessEvaluator(sat.evaluate_formula, 91)
+    fitness_evaluator = FitnessEvaluator(FitnessSAT.evaluate_formula, 91)
+    #dual_fitness_evaluator = DualFitnessEvaluator(FitnessSAT.evaluate_formula, 91)
     
 
     start1 = timeit.default_timer()
@@ -47,8 +47,8 @@ if __name__ == '__main__':
                     executor.submit(    evolve_ssga, 
                                         geno_size=20, 
                                         max_iterations=400_000, 
-                                        pop_size=50, #25, 
-                                        kt=2, 
+                                        pop_size=25, 
+                                        kt=4, 
                                         #local_search=True,
                                         crossover_rate=1.0, 
                                         #random_immigrant=True,
