@@ -1,6 +1,6 @@
 from FitnessEvaluator import FitnessEvaluator, DualFitnessEvaluator
-from SteadyStateGeneticAlgorithm import evolve as evolve_ssga
-from OnePlusOneGeneticAlgorithm import evolve as evolve_1plus1ga
+from AlgorithmSteadyStateGeneticAlgorithm import evolve as evolve_ssga
+from AlgorithmOnePlusOneGeneticAlgorithm import evolve as evolve_1plus1ga
 from scipy.stats import mannwhitneyu, shapiro, ttest_ind
 import numpy
 import random
@@ -14,7 +14,7 @@ def OneMax(genotype):
 def ZeroMax(genotype):
     return len(genotype) - sum(genotype)
 
-import sat
+import FitnessSAT
 
 
 if __name__ == '__main__':
@@ -25,7 +25,7 @@ if __name__ == '__main__':
 
     results1 = []
     
-    fitness_evaluator = FitnessEvaluator(sat.evaluate_formula, 91)
+    fitness_evaluator = FitnessEvaluator(FitnessSAT.evaluate_formula, 91)
     #dual_fitness_evaluator = DualFitnessEvaluator(sat.evaluate_formula, 91)
     
 
