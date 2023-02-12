@@ -48,7 +48,7 @@ if __name__ == '__main__':
                                         geno_size=20, 
                                         max_iterations=400_000, 
                                         pop_size=25, 
-                                        kt=4, 
+                                        kt=8, 
                                         #local_search=True,
                                         crossover_rate=1.0, 
                                         #random_immigrant=True,
