@@ -121,16 +121,48 @@ def diversify_random_immigrant(p: list, fitness_evaluator: FitnessEvaluator):
         p = replace(p, new_cs)
     return p
     
+
+
+
 def diversify_cached_random_immigrant(p: list, fitness_evaluator: FitnessEvaluator):
     for i in range(len(p) // 4):
-        rnd_geno = list(random.choice(list(fitness_evaluator.fitness_cache)))
-        #print(f"Immigrant #{i}\t{rnd_geno}")
+        rnd_geno = list(random.choice(list(fitness_evaluator.fitness_cache)))        
         new_cs = CandidateSolution( genotype=rnd_geno, 
                                     fitness_evaluator=fitness_evaluator)
         new_cs.evaluate()
         p = replace(p, new_cs)
     return p
         
+
+
+
+def diversify_cached_random_immigrant_with_criterion(p: list, fitness_evaluator: FitnessEvaluator):
+    #TODO - select from cache genos that are incomparable to most of the population or pareto-dominate
+    for i in range(len(p) // 4):
+        rnd_geno1 = list(random.choice(list(fitness_evaluator.fitness_cache)))
+        rnd_geno2 = list(random.choice(list(fitness_evaluator.fitness_cache)))
+        cs1 = CandidateSolution(genotype=rnd_geno1, fitness_evaluator=fitness_evaluator)
+        cs2 = CandidateSolution(genotype=rnd_geno2, fitness_evaluator=fitness_evaluator)
+        
+        # The following should not be doing anything due to being cached
+        cs1.evaluate()
+        cs2.evaluate()
+
+        counter1 = 0
+        counter2 = 0
+        for individual in p: 
+            if are_pareto_incomparable(cs1, individual):
+                counter1 += 1
+            if are_pareto_incomparable(cs2, individual):
+                counter2 += 1
+        if counter1 > counter2:
+            new_cs = cs1
+        else:
+            new_cs = cs2
+            
+        p = replace(p, new_cs)
+    return p
+
 
 
 
@@ -171,7 +203,8 @@ def evolve( max_iterations, pop_size, kt, geno_size,
         os2.evaluate()
 
         if random_immigrant:
-            pop = diversify_cached_random_immigrant(pop, fitness_evaluator)
+            pop = diversify_cached_random_immigrant_with_criterion(pop, fitness_evaluator)
+            #pop = diversify_cached_random_immigrant(pop, fitness_evaluator)
             #pop = diversify_random_immigrant(pop, fitness_evaluator)
         
         pop = replace(pop, os1)
