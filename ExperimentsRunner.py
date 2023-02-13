@@ -30,10 +30,10 @@ if __name__ == '__main__':
     results1 = []
     
     #for file uf20-04.cnf (hardcoded in FitnessSAT.py) 91 clauses, 20 variables (genolength)
-    #fitness_evaluator = FitnessEvaluator(FitnessSAT.evaluate_formula, 91)
+    #fitness_evaluator = FitnessEvaluator(FitnessSAT.evaluate_formula, FitnessSAT.MAX_FITNESS)
     
     #for file uf100-04.cnf (hardcoded in FitnessSAT.py) 430 clauses, 100 variables
-    fitness_evaluator = FitnessEvaluator(FitnessSAT.evaluate_formula, 430)
+    fitness_evaluator = FitnessEvaluator(FitnessSAT.evaluate_formula, FitnessSAT.MAX_FITNESS)
     
     #dual_fitness_evaluator = DualFitnessEvaluator(FitnessSAT.evaluate_formula, 91)
     

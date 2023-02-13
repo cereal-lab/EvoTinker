@@ -3,8 +3,12 @@ import random
 
 #91 clauses, 20 vars
 # file1 = open('uf20-04.cnf', 'r')
+# MAX_FITNESS = 91
+
 #430 clauses, 100 vars
 file1 = open('uf100-04.cnf', 'r')
+MAX_FITNESS = 430
+
 count = 0
 formula = []
 while True:
