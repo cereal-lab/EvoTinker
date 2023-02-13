@@ -137,7 +137,7 @@ def diversify_cached_random_immigrant(p: list, fitness_evaluator: FitnessEvaluat
 
 
 def diversify_cached_random_immigrant_with_criterion(p: list, fitness_evaluator: FitnessEvaluator):
-    #TODO - select from cache genos that are incomparable to most of the population or pareto-dominate
+    #select from cache genos that are incomparable to most of the population or pareto-dominate
     for i in range(len(p) // 4):
         rnd_geno1 = list(random.choice(list(fitness_evaluator.fitness_cache)))
         rnd_geno2 = list(random.choice(list(fitness_evaluator.fitness_cache)))
