@@ -43,7 +43,8 @@ if __name__ == '__main__':
             for core in range(number_of_cores):
                 futures.append(
                     #executor.submit(    evolve_1plus1ga, 
-                    #                    geno_size=20, 
+                    #                    #geno_size=20, # for uf20-04.cnf
+                    #                    geno_size=100, # for uf100-04.cnf
                     #                    #mutation_rate = 0.75,
                     #                    max_iterations=40_000, 
                     #                    improve_method="by_reset",
@@ -62,10 +63,6 @@ if __name__ == '__main__':
                                         pareto_select=True,
                                         #mutation_rate=0.50, 
                                         fitness_evaluator=fitness_evaluator))
-
-            #local_search=False,
-            
-            #fitness_evaluator=None): 
             print(f"Started", end='\t')
         results = []
         results += [tuple(r.result()) for r in futures]    

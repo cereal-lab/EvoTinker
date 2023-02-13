@@ -139,8 +139,9 @@ def diversify_cached_random_immigrant(p: list, fitness_evaluator: FitnessEvaluat
 def diversify_cached_random_immigrant_with_criterion(p: list, fitness_evaluator: FitnessEvaluator):
     #select from cache genos that are incomparable to most of the population or pareto-dominate
     for i in range(len(p) // 4):
-        rnd_geno1 = list(random.choice(list(fitness_evaluator.fitness_cache)))
-        rnd_geno2 = list(random.choice(list(fitness_evaluator.fitness_cache)))
+        fitness_cache_as_list = list(fitness_evaluator.fitness_cache)
+        rnd_geno1 = list(random.choice(fitness_cache_as_list))
+        rnd_geno2 = list(random.choice(fitness_cache_as_list))
         cs1 = CandidateSolution(genotype=rnd_geno1, fitness_evaluator=fitness_evaluator)
         cs2 = CandidateSolution(genotype=rnd_geno2, fitness_evaluator=fitness_evaluator)
         
@@ -148,18 +149,23 @@ def diversify_cached_random_immigrant_with_criterion(p: list, fitness_evaluator:
         cs1.evaluate()
         cs2.evaluate()
 
-        counter1 = 0
-        counter2 = 0
-        for individual in p: 
-            if are_pareto_incomparable(cs1, individual):
-                counter1 += 1
-            if are_pareto_incomparable(cs2, individual):
-                counter2 += 1
-        if counter1 > counter2:
-            new_cs = cs1
-        else:
-            new_cs = cs2
-            
+        #counter1 = 0
+        #counter2 = 0
+        #for individual in p: 
+        #    if are_pareto_incomparable(cs1, individual):
+        #        counter1 += 1
+        #    if are_pareto_incomparable(cs2, individual):
+        #        counter2 += 1
+        counter1 = sum([1 if are_pareto_incomparable(cs1, individual) else 0 for individual in p])
+        counter2 = sum([1 if are_pareto_incomparable(cs2, individual) else 0 for individual in p])
+
+
+        #if counter1 > counter2:
+        #    new_cs = cs1
+        #else:
+        #    new_cs = cs2
+        new_cs = cs1 if counter1 > counter2 else cs2    
+        
         p = replace(p, new_cs)
     return p
 
