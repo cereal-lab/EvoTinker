@@ -21,23 +21,19 @@ if __name__ == '__main__':
     
     number_of_cores = 4
     
-    #for file uf20-04.cnf
+    #for file uf20-04.cnf (hardcoded in FitnessSAT.py) 91 clauses, 20 variables (genolength)
     # number_of_trials = 25
+    
+    #for file uf100-04.cnf (hardcoded in FitnessSAT.py) 430 clauses, 100 variables
     number_of_trials = 8
     
     random.seed(422399)
-
-    results1 = []
     
-    #for file uf20-04.cnf (hardcoded in FitnessSAT.py) 91 clauses, 20 variables (genolength)
-    #fitness_evaluator = FitnessEvaluator(FitnessSAT.evaluate_formula, FitnessSAT.MAX_FITNESS)
-    
-    #for file uf100-04.cnf (hardcoded in FitnessSAT.py) 430 clauses, 100 variables
     fitness_evaluator = FitnessEvaluator(FitnessSAT.evaluate_formula, FitnessSAT.MAX_FITNESS)
-    
     #dual_fitness_evaluator = DualFitnessEvaluator(FitnessSAT.evaluate_formula, 91)
     
 
+    results1 = []
     start1 = timeit.default_timer()
 
     for i in range(number_of_trials):        
