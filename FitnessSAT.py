@@ -1,7 +1,10 @@
 import random
 
 
-file1 = open('uf20-04.cnf', 'r')
+#91 clauses, 20 vars
+# file1 = open('uf20-04.cnf', 'r')
+#430 clauses, 100 vars
+file1 = open('uf100-04.cnf', 'r')
 count = 0
 formula = []
 while True:

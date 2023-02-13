@@ -20,12 +20,21 @@ import FitnessSAT
 if __name__ == '__main__':
     
     number_of_cores = 4
-    number_of_trials = 25
+    
+    #for file uf20-04.cnf
+    # number_of_trials = 25
+    number_of_trials = 8
+    
     random.seed(422399)
 
     results1 = []
     
-    fitness_evaluator = FitnessEvaluator(FitnessSAT.evaluate_formula, 91)
+    #for file uf20-04.cnf (hardcoded in FitnessSAT.py) 91 clauses, 20 variables (genolength)
+    #fitness_evaluator = FitnessEvaluator(FitnessSAT.evaluate_formula, 91)
+    
+    #for file uf100-04.cnf (hardcoded in FitnessSAT.py) 430 clauses, 100 variables
+    fitness_evaluator = FitnessEvaluator(FitnessSAT.evaluate_formula, 430)
+    
     #dual_fitness_evaluator = DualFitnessEvaluator(FitnessSAT.evaluate_formula, 91)
     
 
@@ -45,13 +54,15 @@ if __name__ == '__main__':
                     #                    recombination=10,
                     #                    fitness_evaluator=fitness_evaluator))
                     executor.submit(    evolve_ssga, 
-                                        geno_size=20, 
+                                        #geno_size=20, # for uf20-04.cnf
+                                        geno_size=100, # for uf100-04.cnf
                                         max_iterations=400_000, 
-                                        pop_size=25, 
+                                        #pop_size=25, # for uf20-04.cnf
+                                        pop_size=50, # for uf100-04.cnf
                                         kt=2, 
                                         #local_search=True,
                                         crossover_rate=1.0, 
-                                        random_immigrant=True,
+                                        #random_immigrant=True,
                                         pareto_select=True,
                                         #mutation_rate=0.50, 
                                         fitness_evaluator=fitness_evaluator))
