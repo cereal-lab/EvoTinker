@@ -46,9 +46,10 @@ if __name__ == '__main__':
                                         #geno_size=20, # for uf20-04.cnf
                                         geno_size=100, # for uf100-04.cnf
                                         #mutation_rate = 0.75,
-                                        max_iterations=40_000, 
+                                        #max_iterations=40_000, # for uf20-04.cnf
+                                        max_iterations=100_000, # for uf100-04.cnf
                                         improve_method="by_reset",
-                                        #recombination=10,
+                                        recombination=10,
                                         fitness_evaluator=fitness_evaluator))
                     #executor.submit(    evolve_ssga, 
                     #                    #geno_size=20, # for uf20-04.cnf
