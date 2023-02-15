@@ -17,15 +17,16 @@ def ZeroMax(genotype):
 import FitnessSAT
 
 
+
 if __name__ == '__main__':
-    
+        
     number_of_cores = 4
     
     #for file uf20-04.cnf (hardcoded in FitnessSAT.py) 91 clauses, 20 variables (genolength)
     # number_of_trials = 25
     
     #for file uf100-04.cnf (hardcoded in FitnessSAT.py) 430 clauses, 100 variables
-    number_of_trials = 8
+    number_of_trials = 8 # NOTE this * number_of_cores is the total number of trials
     
     random.seed(422399)
     
