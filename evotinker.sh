@@ -6,6 +6,7 @@
 #SBATCH --partition=amd_2021
 #SBATCH --job-name=evotinker
 #SBATCH --time=10:00:00
+#SBATCH --mem=16000
 module purge
 module add apps/python/3.8.5
 cd runs 
