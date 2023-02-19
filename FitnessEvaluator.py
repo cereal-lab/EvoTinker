@@ -28,6 +28,7 @@ class FitnessEvaluator(object):
         self.cache_hits = 0
         self.cache_misses = 0
         self.fitness_cache.clear()
+        self.outcome_cache.clear()
 
 
 class DualFitnessEvaluator(FitnessEvaluator):
