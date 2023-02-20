@@ -16,6 +16,13 @@ def ZeroMax(genotype):
 
 import FitnessSAT
 
+def time_warp(seconds):
+    minutes = seconds // 60 
+    seconds = seconds % 60 
+    hours = minutes // 60 
+    minutes = minutes % 60 
+    return '' + str(int(hours)) + ':' + str(int(minutes)) + ':' + str(int(seconds))
+
 
 
 if __name__ == '__main__':
@@ -81,4 +88,4 @@ if __name__ == '__main__':
             pickle.dump(series1,f)
 
 
-    print("Run duration =", stop1-start1)
+    print("Run duration =", time_warp(stop1-start1))
