@@ -16,6 +16,8 @@ export PYTHONPATH=$(pipenv run which python)
 #echo $PYTHONPATH 
 #pipenv shell
 pipenv sync
-pipenv run python ExperimentsRunnerMonoCore.py
+#pipenv run python ExperimentsRunnerMonoCore.py
+pipenv run python ExperimentsRunnerMultiCores.py
+
 
 

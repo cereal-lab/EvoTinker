@@ -33,7 +33,7 @@ if __name__ == '__main__':
     # number_of_trials = 25
     
     #for file uf100-04.cnf (hardcoded in FitnessSAT.py) 430 clauses, 100 variables
-    number_of_trials_per_core = 8 
+    number_of_trials_per_core = 10 
     number_of_trials = number_of_trials_per_core * number_of_cores
 
     random.seed(422399)
@@ -51,28 +51,28 @@ if __name__ == '__main__':
         with ProcessPoolExecutor(4) as executor:
             for core in range(number_of_cores):
                 futures.append(
-                    executor.submit(    evolve_1plus1ga, 
-                                        #geno_size=20, # for uf20-04.cnf
-                                        geno_size=100, # for uf100-04.cnf
-                                        #mutation_rate = 0.75,
-                                        #max_iterations=40_000, # for uf20-04.cnf
-                                        max_iterations=100_000, # for uf100-04.cnf
-                                        improve_method="by_reset",
-                                        recombination=10,
-                                        fitness_evaluator=fitness_evaluator))
-                    #executor.submit(    evolve_ssga, 
+                    #executor.submit(    evolve_1plus1ga, 
                     #                    #geno_size=20, # for uf20-04.cnf
                     #                    geno_size=100, # for uf100-04.cnf
-                    #                    max_iterations=400_000, 
-                    #                    #pop_size=25, # for uf20-04.cnf
-                    #                    pop_size=50, # for uf100-04.cnf
-                    #                    kt=2, 
-                    #                    #local_search=True,
-                    #                    crossover_rate=1.0, 
-                    #                    #random_immigrant=True,
-                    #                    pareto_select=True,
-                    #                    #mutation_rate=0.50, 
+                    #                    #mutation_rate = 0.75,
+                    #                    #max_iterations=40_000, # for uf20-04.cnf
+                    #                    max_iterations=400_000, # for uf100-04.cnf
+                    #                    improve_method="by_reset",
+                    #                    recombination=10,
                     #                    fitness_evaluator=fitness_evaluator))
+                    executor.submit(    evolve_ssga, 
+                                        #geno_size=20, # for uf20-04.cnf
+                                        geno_size=100, # for uf100-04.cnf
+                                        max_iterations=400_000, 
+                                        #pop_size=25, # for uf20-04.cnf
+                                        pop_size=50, # for uf100-04.cnf
+                                        kt=2, 
+                                        #local_search=True,
+                                        crossover_rate=1.0, 
+                                        #random_immigrant=True,
+                                        pareto_select=True,
+                                        #mutation_rate=0.50, 
+                                        fitness_evaluator=fitness_evaluator))
             print(f"Started", end='\t')
         results = []
         results += [tuple(r.result()) for r in futures]    
