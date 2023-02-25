@@ -1,0 +1,17 @@
+Cloning into 'EvoTinker'...
+Checking out files:  32% (31/96)   Checking out files:  33% (32/96)   Checking out files:  34% (33/96)   Checking out files:  35% (34/96)   Checking out files:  36% (35/96)   Checking out files:  37% (36/96)   Checking out files:  38% (37/96)   Checking out files:  39% (38/96)   Checking out files:  40% (39/96)   Checking out files:  41% (40/96)   Checking out files:  42% (41/96)   Checking out files:  43% (42/96)   Checking out files:  44% (43/96)   Checking out files:  45% (44/96)   Checking out files:  46% (45/96)   Checking out files:  47% (46/96)   Checking out files:  48% (47/96)   Checking out files:  50% (48/96)   Checking out files:  51% (49/96)   Checking out files:  52% (50/96)   Checking out files:  53% (51/96)   Checking out files:  54% (52/96)   Checking out files:  55% (53/96)   Checking out files:  56% (54/96)   Checking out files:  57% (55/96)   Checking out files:  58% (56/96)   Checking out files:  59% (57/96)   Checking out files:  60% (58/96)   Checking out files:  61% (59/96)   Checking out files:  62% (60/96)   Checking out files:  63% (61/96)   Checking out files:  64% (62/96)   Checking out files:  65% (63/96)   Checking out files:  66% (64/96)   Checking out files:  67% (65/96)   Checking out files:  68% (66/96)   Checking out files:  69% (67/96)   Checking out files:  70% (68/96)   Checking out files:  71% (69/96)   Checking out files:  72% (70/96)   Checking out files:  73% (71/96)   Checking out files:  75% (72/96)   Checking out files:  76% (73/96)   Checking out files:  77% (74/96)   Checking out files:  78% (75/96)   Checking out files:  79% (76/96)   Checking out files:  80% (77/96)   Checking out files:  81% (78/96)   Checking out files:  82% (79/96)   Checking out files:  83% (80/96)   Checking out files:  84% (81/96)   Checking out files:  85% (82/96)   Checking out files:  86% (83/96)   Checking out files:  87% (84/96)   Checking out files:  88% (85/96)   Checking out files:  89% (86/96)   Checking out files:  90% (87/96)   Checking out files:  91% (88/96)   Checking out files:  92% (89/96)   Checking out files:  93% (90/96)   Checking out files:  94% (91/96)   Checking out files:  95% (92/96)   Checking out files:  96% (93/96)   Checking out files:  97% (94/96)   Checking out files:  98% (95/96)   Checking out files: 100% (96/96)   Checking out files: 100% (96/96), done.
+Installing dependencies from Pipfile.lock (031ec3)...
+To activate this project's virtualenv, run pipenv shell.
+Alternatively, run a command inside the virtualenv with pipenv run.
+All dependencies are now up-to-date!
+Run #0	Started	DONE
+Run #1	Started	DONE
+Run #2	Started	DONE
+Run #3	Started	DONE
+Run #4	Started	DONE
+Run #5	Started	DONE
+Run #6	Started	DONE
+Run #7	Started	DONE
+Run #8	Started	DONE
+Run #9	Started	DONE
+Run duration = 8:1:2
