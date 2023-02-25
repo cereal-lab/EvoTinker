@@ -125,7 +125,7 @@ def diversify_random_immigrant(p: list, fitness_evaluator: FitnessEvaluator):
 
 
 def diversify_cached_random_immigrant(p: list, fitness_evaluator: FitnessEvaluator):
-    for i in range(len(p) // 4):
+    for i in range(len(p) // 5):
         rnd_geno = list(random.choice(list(fitness_evaluator.fitness_cache)))        
         new_cs = CandidateSolution( genotype=rnd_geno, 
                                     fitness_evaluator=fitness_evaluator)
@@ -138,7 +138,7 @@ def diversify_cached_random_immigrant(p: list, fitness_evaluator: FitnessEvaluat
 
 def diversify_cached_random_immigrant_with_criterion(p: list, fitness_evaluator: FitnessEvaluator):
     #select from cache genos that are incomparable to most of the population or pareto-dominate
-    for i in range(len(p) // 4):
+    for i in range(len(p) // 5):
         fitness_cache_as_list = list(fitness_evaluator.fitness_cache)
         rnd_geno1 = list(random.choice(fitness_cache_as_list))
         rnd_geno2 = list(random.choice(fitness_cache_as_list))
@@ -209,8 +209,8 @@ def evolve( max_iterations, pop_size, kt, geno_size,
         os2.evaluate()
 
         if random_immigrant:
-            pop = diversify_cached_random_immigrant_with_criterion(pop, fitness_evaluator)
-            #pop = diversify_cached_random_immigrant(pop, fitness_evaluator)
+            #pop = diversify_cached_random_immigrant_with_criterion(pop, fitness_evaluator)
+            pop = diversify_cached_random_immigrant(pop, fitness_evaluator)
             #pop = diversify_random_immigrant(pop, fitness_evaluator)
         
         pop = replace(pop, os1)
