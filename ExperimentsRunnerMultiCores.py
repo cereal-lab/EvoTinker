@@ -33,7 +33,7 @@ if __name__ == '__main__':
     # number_of_trials = 25
     
     #for file uf100-04.cnf (hardcoded in FitnessSAT.py) 430 clauses, 100 variables
-    number_of_trials_per_core = 10 
+    number_of_trials_per_core = 8 
     number_of_trials = number_of_trials_per_core * number_of_cores
 
     random.seed(422399)
@@ -63,7 +63,7 @@ if __name__ == '__main__':
                     executor.submit(    evolve_ssga, 
                                         #geno_size=20, # for uf20-04.cnf
                                         geno_size=100, # for uf100-04.cnf
-                                        max_iterations=400_000, 
+                                        max_iterations=100_000, 
                                         #pop_size=25, # for uf20-04.cnf
                                         pop_size=50, # for uf100-04.cnf
                                         kt=2, 

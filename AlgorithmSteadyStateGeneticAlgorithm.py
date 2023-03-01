@@ -115,7 +115,7 @@ def select_pareto(p: list, kt=2):
 
     
 def diversify_random_immigrant(p: list, fitness_evaluator: FitnessEvaluator):
-    for _ in range(len(p) // 5):
+    for _ in range(len(p) // 10):
         new_cs = CandidateSolution(len(p[0].genotype), fitness_evaluator=fitness_evaluator)
         new_cs.evaluate()
         p = replace(p, new_cs)
@@ -125,8 +125,9 @@ def diversify_random_immigrant(p: list, fitness_evaluator: FitnessEvaluator):
 
 
 def diversify_cached_random_immigrant(p: list, fitness_evaluator: FitnessEvaluator):
-    for i in range(len(p) // 5):
-        rnd_geno = list(random.choice(list(fitness_evaluator.fitness_cache)))        
+    pool = list(fitness_evaluator.fitness_cache)
+    for i in range(len(p) // 10):
+        rnd_geno = list(random.choice(pool))        
         new_cs = CandidateSolution( genotype=rnd_geno, 
                                     fitness_evaluator=fitness_evaluator)
         new_cs.evaluate()
@@ -138,7 +139,7 @@ def diversify_cached_random_immigrant(p: list, fitness_evaluator: FitnessEvaluat
 
 def diversify_cached_random_immigrant_with_criterion(p: list, fitness_evaluator: FitnessEvaluator):
     #select from cache genos that are incomparable to most of the population or pareto-dominate
-    for i in range(len(p) // 5):
+    for i in range(len(p) // 10):
         fitness_cache_as_list = list(fitness_evaluator.fitness_cache)
         rnd_geno1 = list(random.choice(fitness_cache_as_list))
         rnd_geno2 = list(random.choice(fitness_cache_as_list))
