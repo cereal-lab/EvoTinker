@@ -66,7 +66,7 @@ if __name__ == '__main__':
                                         max_iterations=100_000, 
                                         #pop_size=25, # for uf20-04.cnf
                                         pop_size=50, # for uf100-04.cnf
-                                        kt=2, 
+                                        kt=2,  
                                         #local_search=True,
                                         crossover_rate=1.0, 
                                         random_immigrant=True,
