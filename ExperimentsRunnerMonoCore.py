@@ -40,7 +40,7 @@ if __name__ == '__main__':
 
     for i in range(number_of_trials):        
         print(f"Run #{i}", end='\t')
-        print(f"Started", end='\t')
+        print(f"Started", end='\t', flush=True)
         start_trial = timeit.default_timer()
         #best, iteration, cache_hits, cache_misses = evolve_1plus1ga(    
         #                    #geno_size=20, # for uf20-04.cnf
