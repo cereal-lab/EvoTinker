@@ -10,3 +10,8 @@ python3 ExperimentsRunnerMonoCore.py
 sbatch evotinker.sh
 squeue -u alessio
 ```
+SAT instances from: https://www.cs.ubc.ca/~hoos/SATLIB/benchm.html
+
+
+
+
