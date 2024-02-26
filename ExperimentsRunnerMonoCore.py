@@ -29,7 +29,7 @@ if __name__ == '__main__':
     # number_of_trials = 25
     
     #for file uf100-04.cnf (hardcoded in FitnessSAT.py) 430 clauses, 100 variables
-    number_of_trials = 40
+    number_of_trials = 32
     
     random.seed(422399)
     
