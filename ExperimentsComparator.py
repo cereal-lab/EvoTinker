@@ -9,6 +9,9 @@ import numpy
 f1_core = sys.argv[1]
 f2_core = sys.argv[2]
 
+# NOTE: Update if return values from evolve change
+stats_names=['best', 'iteration', 'cache_hits', 'cache_misses']
+
 for i in range(4):
     #root = 'Experiments Logs/'
     root = ''
@@ -22,9 +25,10 @@ for i in range(4):
         series2 = pickle.load(f)
 
 
-    print('-' * 18)
-    print(f'STATISTIC #{i}')
-    print('-' * 18)
+    title = f'STATISTIC #{i}: {stats_names[i]}'
+    print('-' * len(title))
+    print(title)
+    print('-' * len(title))
     print('\tSeries 1 -->', f1_name)
     print('\tSeries 2 -->', f2_name)
     print("\tSeries 1 mean =", numpy.mean(series1))

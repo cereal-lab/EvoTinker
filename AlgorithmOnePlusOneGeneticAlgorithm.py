@@ -1,6 +1,10 @@
 import random
 import numpy
 from CandidateSolution import CandidateSolution
+#----
+from rich.progress import track
+import time
+
 
 def recombine(p1: CandidateSolution, p2: CandidateSolution, rate=None):
     if rate is not None and random.random() < rate:
@@ -78,7 +82,9 @@ def evolve( max_iterations, geno_size,
             improve_method=None, 
             mutation_rate=None, 
             fitness_evaluator=None, 
-            recombination=None):  
+            recombination=None, 
+            experiment_number=None,
+            experiment_total=None):  
     cs = CandidateSolution(geno_size, fitness_evaluator=fitness_evaluator)
     cs.evaluate()
     improve_functions = { 
@@ -87,7 +93,17 @@ def evolve( max_iterations, geno_size,
         "by_tabu_reset":    improve_by_tabu_reset
     }
     improve = improve_functions[improve_method]
-    for iteration in range(max_iterations):
+    
+    if experiment_number != None and experiment_total != None: 
+        descript = f'1+1GA {experiment_number:3d} /{experiment_total:3d}'
+    else:
+        descript = '1+1GA' 
+
+    # NOTE: TODO: Pick an iterator: 
+    it = track(range(max_iterations), description=descript) # for interactive shells
+    # it = range(max_iterations) # for background batch jobs
+    
+    for iteration in it:
         #print(iteration)
         cs = improve(cs, mutation_rate)
         if recombination is not None:

@@ -2,6 +2,9 @@ import random
 import numpy
 from FitnessEvaluator import FitnessEvaluator
 from CandidateSolution import CandidateSolution
+#----
+from rich.progress import track
+import time
 
 
 
@@ -179,7 +182,9 @@ def evolve( max_iterations, pop_size, kt, geno_size,
             pareto_select=False,
             mutation_rate=None, 
             crossover_rate=None, 
-            fitness_evaluator=None):    
+            fitness_evaluator=None, 
+            experiment_number=None,
+            experiment_total=None):    
     pop = []
     for _ in range(pop_size):
         cs = CandidateSolution(geno_size, fitness_evaluator=fitness_evaluator)
@@ -187,9 +192,16 @@ def evolve( max_iterations, pop_size, kt, geno_size,
         pop.append(cs)
         
     best = max(pop, key=lambda item: item.fitness)
+    if experiment_number != None and experiment_total != None: 
+        descript = f'SSGA {experiment_number:3d} /{experiment_total:3d}'
+    else:
+        descript = 'SSGA' 
 
-    for iteration in range(max_iterations):
-        #print(f"Iteration #{iteration}")
+    # NOTE: TODO: Pick an iterator: 
+    it = track(range(max_iterations), description=descript) # for interactive shells
+    # it = range(max_iterations) # for background batch jobs
+
+    for iteration in it:
         if pareto_select:
             p1,p2 = select_pareto(pop, 5)
         else:
