@@ -17,6 +17,7 @@ pip install pipenv
 export PYTHONPATH=$(pipenv run which python)
 #echo $PYTHONPATH
 pipenv shell
+pipenv install
 pipenv sync
 pip uninstall -y scipy && pip install scipy
 pipenv run python ExperimentsRunnerMonoCore.py

@@ -30,6 +30,9 @@ if __name__ == '__main__':
     
     #for file uf100-04.cnf (hardcoded in FitnessSAT.py) 430 clauses, 100 variables
     number_of_trials = 32
+
+    #for file uf250-32.cnf (hardcoded in FitnessSAT.py) 1065 clauses, 250 variables
+    number_of_trials = 32
     
     random.seed(422399)
     
@@ -47,32 +50,33 @@ if __name__ == '__main__':
         print(f"Run #{i}", end='\t')
         print(f"Started", end='\t', flush=True)
         start_trial = timeit.default_timer()
-        best, iteration, cache_hits, cache_misses = evolve_1plus1ga(    
-                            #geno_size=20, # for uf20-04.cnf
-                            geno_size=100, # for uf100-04.cnf
-                            #mutation_rate = 0.75,
-                            #max_iterations=40_000, # for uf20-04.cnf
-                            max_iterations=400_000, # for uf100-04.cnf
-                            improve_method="by_reset",
-                            #recombination=10,
-                            fitness_evaluator=fitness_evaluator, 
-                            experiment_number=i,
-                            experiment_total=number_of_trials)
-        # best, iteration, cache_hits, cache_misses  = evolve_ssga(       
+        # best, iteration, cache_hits, cache_misses = evolve_1plus1ga(    
         #                     #geno_size=20, # for uf20-04.cnf
         #                     geno_size=100, # for uf100-04.cnf
-        #                     max_iterations=400_000, 
-        #                     #pop_size=25, # for uf20-04.cnf
-        #                     pop_size=50, # for uf100-04.cnf
-        #                     kt=2, 
-        #                     #local_search=True,
-        #                     crossover_rate=1.0, 
-        #                     #random_immigrant=True,
-        #                     pareto_select=True,
-        #                     #mutation_rate=0.50, 
+        #                     #mutation_rate = 0.75,
+        #                     #max_iterations=40_000, # for uf20-04.cnf
+        #                     max_iterations=400_000, # for uf100-04.cnf
+        #                     improve_method="by_reset",
+        #                     #recombination=10,
         #                     fitness_evaluator=fitness_evaluator, 
         #                     experiment_number=i,
         #                     experiment_total=number_of_trials)
+        best, iteration, cache_hits, cache_misses  = evolve_ssga(       
+                            #geno_size=20, # for uf20-04.cnf
+                            #geno_size=100, # for uf100-04.cnf
+                            geno_size=250, # for uf250-32.cnf
+                            max_iterations=400_000, 
+                            #pop_size=25, # for uf20-04.cnf
+                            pop_size=50, # for uf100-04.cnf
+                            kt=2, 
+                            #local_search=True,
+                            crossover_rate=1.0, 
+                            random_immigrant=True,
+                            pareto_select=True,
+                            mutation_rate=0.05, 
+                            fitness_evaluator=fitness_evaluator, 
+                            experiment_number=i,
+                            experiment_total=number_of_trials)
         stop_trial = timeit.default_timer()
         result = tuple([best, iteration, cache_hits, cache_misses])
         results += [result]
