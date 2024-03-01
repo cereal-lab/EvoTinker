@@ -59,9 +59,10 @@ if __name__ == '__main__':
                     #executor.submit(    evolve_1plus1ga, 
                     #                    #geno_size=20, # for uf20-04.cnf
                     #                    geno_size=100, # for uf100-04.cnf
+                    #                    geno_size=250, # for uf250-032.cnf
                     #                    #mutation_rate = 0.75,
                     #                    #max_iterations=40_000, # for uf20-04.cnf
-                    #                    max_iterations=400_000, # for uf100-04.cnf
+                    #                    max_iterations=100_000, # for uf100-04.cnf
                     #                    improve_method="by_reset",
                     #                    recombination=10,
                     #                    fitness_evaluator=fitness_evaluator, 
@@ -77,7 +78,7 @@ if __name__ == '__main__':
                                         kt=2,  
                                         #local_search=True,
                                         crossover_rate=1.0, 
-                                        random_immigrant=True,
+                                        random_immigrant='', #'original', #'cached' #'cached+criterion'
                                         pareto_select=True,
                                         #mutation_rate=0.50, 
                                         fitness_evaluator=fitness_evaluator, 

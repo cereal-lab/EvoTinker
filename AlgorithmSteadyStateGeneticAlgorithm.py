@@ -221,11 +221,16 @@ def evolve( max_iterations, pop_size, kt, geno_size,
         os1.evaluate()
         os2.evaluate()
 
-        if random_immigrant:
-            #pop = diversify_cached_random_immigrant_with_criterion(pop, fitness_evaluator)
+        if random_immigrant == 'original':
+            pop = diversify_random_immigrant(pop, fitness_evaluator)
+        elif random_immigrant == 'cached':
             pop = diversify_cached_random_immigrant(pop, fitness_evaluator)
-            #pop = diversify_random_immigrant(pop, fitness_evaluator)
-        
+        elif random_immigrant == 'cached+criterion':
+            pop = diversify_cached_random_immigrant_with_criterion(pop, fitness_evaluator)
+        elif random_immigrant != '':
+            print('Unknown Random Immigrant Method')
+            exit()
+
         pop = replace(pop, os1)
         pop = replace(pop, os2)
 
