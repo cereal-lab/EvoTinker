@@ -178,7 +178,7 @@ def diversify_cached_random_immigrant_with_criterion(p: list, fitness_evaluator:
 
 def evolve( max_iterations, pop_size, kt, geno_size, 
             local_search=False,
-            random_immigrant=False,
+            random_immigrant='',
             pareto_select=False,
             mutation_rate=None, 
             crossover_rate=None, 
