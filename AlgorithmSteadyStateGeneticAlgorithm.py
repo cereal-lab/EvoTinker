@@ -223,8 +223,8 @@ def evolve( max_iterations, pop_size, kt, geno_size,
 
         if random_immigrant:
             #pop = diversify_cached_random_immigrant_with_criterion(pop, fitness_evaluator)
-            #pop = diversify_cached_random_immigrant(pop, fitness_evaluator)
-            pop = diversify_random_immigrant(pop, fitness_evaluator)
+            pop = diversify_cached_random_immigrant(pop, fitness_evaluator)
+            #pop = diversify_random_immigrant(pop, fitness_evaluator)
         
         pop = replace(pop, os1)
         pop = replace(pop, os2)
