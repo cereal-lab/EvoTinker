@@ -71,8 +71,8 @@ if __name__ == '__main__':
                             kt=2, 
                             #local_search=True,
                             crossover_rate=1.0, 
-                            random_immigrant='original', #'cached' #'cached+criterion'
-                            pareto_select=True,
+                            random_immigrant='cached', #'cached' #'cached+criterion'
+                            #pareto_select=True,
                             mutation_rate=0.05, 
                             fitness_evaluator=fitness_evaluator, 
                             experiment_number=i,

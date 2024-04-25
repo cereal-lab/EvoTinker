@@ -1,3 +1,4 @@
+from randomdict.randomdict import RandomDict
 class FitnessEvaluator(object):
         
     def __init__(self, fitness_function, max_fitness):
@@ -5,13 +6,13 @@ class FitnessEvaluator(object):
         #pass # if we init fields here, the constructor is run everytime we create a singleton
         self.cache_hits = 0
         self.cache_misses = 0
-        self.fitness_cache = {}
-        self.outcome_cache = {}
+        self.fitness_cache = RandomDict()
+        self.outcome_cache = RandomDict()
         self.fitness_function = fitness_function
             
     def evaluate(self, genotype):
         key = tuple(genotype)
-        if key in self.fitness_cache.keys():
+        if key in self.fitness_cache:
             self.cache_hits += 1
             return self.fitness_cache[key], self.outcome_cache[key]
         else:
