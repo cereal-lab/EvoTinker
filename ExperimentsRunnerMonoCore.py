@@ -29,7 +29,7 @@ if __name__ == '__main__':
     # number_of_trials = 25
     
     #for file uf100-04.cnf (hardcoded in FitnessSAT.py) 430 clauses, 100 variables
-    number_of_trials = 32
+    #number_of_trials = 32
 
     #for file uf250-32.cnf (hardcoded in FitnessSAT.py) 1065 clauses, 250 variables
     number_of_trials = 32
@@ -71,7 +71,7 @@ if __name__ == '__main__':
                             kt=2, 
                             #local_search=True,
                             crossover_rate=1.0, 
-                            random_immigrant='cached', #'cached' #'cached+criterion'
+                            random_immigrant='cached+criterion', #'cached' #'cached+criterion'
                             #pareto_select=True,
                             mutation_rate=0.05, 
                             fitness_evaluator=fitness_evaluator, 

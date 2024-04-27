@@ -51,7 +51,10 @@ for i in range(4):
     else:
         print('DIFFERENT distributions')
 
-    stat, p = mannwhitneyu(series1, series2)
+    try: # ugly hack to prevent exception if the two series are almost identical
+        stat, p = mannwhitneyu(series1, series2)
+    except Exception:
+        pass
     print("\tMann-Whitney: \t stat=%10.3f, p=%10.3f \t --> " % (stat, p), end="")
     if p > 0.05:
         #print('H0 not rejected: samples are from SAME distribution')
