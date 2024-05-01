@@ -145,24 +145,27 @@ def diversify_cached_random_immigrant_with_criterion_HAMMING(p: list, fitness_ev
     # select from cache genos that on average maximally distant from population genotypes
     # uses the hamming distance as measure of distance
     for i in range(len(p) // 10):
-        rnd_geno1 = list(fitness_evaluator.fitness_cache.random_key())
-        rnd_geno2 = list(fitness_evaluator.fitness_cache.random_key())
-        cs1 = CandidateSolution(genotype=rnd_geno1, fitness_evaluator=fitness_evaluator)
-        cs2 = CandidateSolution(genotype=rnd_geno2, fitness_evaluator=fitness_evaluator)
+        # NOTE: The 10 below is the KT for selecting from cache
+        L_geno = [list(fitness_evaluator.fitness_cache.random_key()) for _ in range(10)]
+
+        L_cs = [CandidateSolution(genotype=rnd_geno, fitness_evaluator=fitness_evaluator) for rnd_geno in L_geno]
+        for c in L_cs: 
+            c.evaluate()
+            # should not be doing anything due to being cached
         
-        # The following should not be doing anything due to being cached
-        cs1.evaluate()
-        cs2.evaluate()
-
-        avg_dist_1 = [hamming(cs1, individual) for individual in p]
-        avg_dist_2 = [hamming(cs2, individual) for individual in p]
-
-        avg_dist_1 = sum(avg_dist_1) / len(avg_dist_1)
-        avg_dist_2 = sum(avg_dist_2) / len(avg_dist_2)
-
-        new_cs = cs1 if avg_dist_1 > avg_dist_2 else cs2    
-        
-        p = replace(p, new_cs)
+        avg_dist = []
+        for cs in L_cs: 
+            tmp_dist = [hamming(cs, individual) for individual in p]
+            avg_dist.append(sum(tmp_dist)/len(tmp_dist))
+                
+        max_dist = avg_dist[0]
+        max_indx = 0
+        for i,avg in enumerate(avg_dist): 
+            if avg > max_dist: 
+                max_dist = avg
+                max_indx = i
+                
+        p = replace(p, L_cs[max_indx])
     return p
 
 
