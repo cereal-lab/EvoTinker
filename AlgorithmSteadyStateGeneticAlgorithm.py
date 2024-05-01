@@ -137,10 +137,36 @@ def diversify_cached_random_immigrant(p: list, fitness_evaluator: FitnessEvaluat
         p = replace(p, new_cs)
     return p
         
+def hamming(c1, c2): 
+    # returns the hamming distance between the genotypes of candidate solutions c1 and c2
+    return sum([abs(c1.genotype[i] - c2.genotype[i]) for i in range(len( c1.genotype ))])
+
+def diversify_cached_random_immigrant_with_criterion_HAMMING(p: list, fitness_evaluator: FitnessEvaluator):
+    # select from cache genos that on average maximally distant from population genotypes
+    # uses the hamming distance as measure of distance
+    for i in range(len(p) // 10):
+        rnd_geno1 = list(fitness_evaluator.fitness_cache.random_key())
+        rnd_geno2 = list(fitness_evaluator.fitness_cache.random_key())
+        cs1 = CandidateSolution(genotype=rnd_geno1, fitness_evaluator=fitness_evaluator)
+        cs2 = CandidateSolution(genotype=rnd_geno2, fitness_evaluator=fitness_evaluator)
+        
+        # The following should not be doing anything due to being cached
+        cs1.evaluate()
+        cs2.evaluate()
+
+        avg_dist_1 = [hamming(cs1, individual) for individual in p]
+        avg_dist_2 = [hamming(cs2, individual) for individual in p]
+
+        avg_dist_1 = sum(avg_dist_1) / len(avg_dist_1)
+        avg_dist_2 = sum(avg_dist_2) / len(avg_dist_2)
+
+        new_cs = cs1 if avg_dist_1 > avg_dist_2 else cs2    
+        
+        p = replace(p, new_cs)
+    return p
 
 
-
-def diversify_cached_random_immigrant_with_criterion(p: list, fitness_evaluator: FitnessEvaluator):
+def diversify_cached_random_immigrant_with_criterion_PARETO(p: list, fitness_evaluator: FitnessEvaluator):
     #select from cache genos that are incomparable to most of the population or pareto-dominate
     for i in range(len(p) // 10):
         rnd_geno1 = list(fitness_evaluator.fitness_cache.random_key())
@@ -225,7 +251,8 @@ def evolve( max_iterations, pop_size, kt, geno_size,
         elif random_immigrant == 'cached':
             pop = diversify_cached_random_immigrant(pop, fitness_evaluator)
         elif random_immigrant == 'cached+criterion':
-            pop = diversify_cached_random_immigrant_with_criterion(pop, fitness_evaluator)
+            pop = diversify_cached_random_immigrant_with_criterion_HAMMING(pop, fitness_evaluator)
+            # the above can be changed to _PARETO
         elif random_immigrant != '':
             print('Unknown Random Immigrant Method')
             exit()

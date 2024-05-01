@@ -62,12 +62,12 @@ if __name__ == '__main__':
         #                     experiment_number=i,
         #                     experiment_total=number_of_trials)
         best, iteration, cache_hits, cache_misses  = evolve_ssga(       
-                            #geno_size=20, # for uf20-04.cnf
+                            geno_size=20, # for uf20-04.cnf
                             #geno_size=100, # for uf100-04.cnf
-                            geno_size=250, # for uf250-32.cnf
+                            #geno_size=250, # for uf250-32.cnf
                             max_iterations=400_000, 
-                            #pop_size=25, # for uf20-04.cnf
-                            pop_size=50, # for uf100-04.cnf
+                            pop_size=25, # for uf20-04.cnf
+                            #pop_size=50, # for uf100-04.cnf
                             kt=2, 
                             #local_search=True,
                             crossover_rate=1.0, 

@@ -2,16 +2,16 @@ import random
 
 
 #91 clauses, 20 vars
-# file1 = open('uf20-04.cnf', 'r')
-# MAX_FITNESS = 91
+file1 = open('uf20-04.cnf', 'r')
+MAX_FITNESS = 91
 
 #430 clauses, 100 vars
 #file1 = open('uf100-04.cnf', 'r')
 #MAX_FITNESS = 430
 
 #1065 clauses, 250 vars
-file1 = open('uf250-032.cnf', 'r')
-MAX_FITNESS = 1065
+# file1 = open('uf250-032.cnf', 'r')
+# MAX_FITNESS = 1065
 
 count = 0
 formula = []
