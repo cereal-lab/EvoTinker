@@ -136,7 +136,22 @@ def diversify_cached_random_immigrant(p: list, fitness_evaluator: FitnessEvaluat
         new_cs.evaluate()
         p = replace(p, new_cs)
     return p
+
+def diversify_cached_random_immigrant_with_criterion_FITNESS(p: list, fitness_evaluator: FitnessEvaluator):
+    # select from cache genos that have high fitness
+    for i in range(len(p) // 10):
+        # NOTE: The 10 below is the KT for selecting from cache
+        L_geno = [list(fitness_evaluator.fitness_cache.random_key()) for _ in range(10)]
+
+        L_cs = [CandidateSolution(genotype=rnd_geno, fitness_evaluator=fitness_evaluator) for rnd_geno in L_geno]
+        for c in L_cs: 
+            c.evaluate()
+            # should not be doing anything due to being cached
         
+        p = replace(p, max(L_cs, key=lambda x : x.fitness))
+    return p
+
+
 def hamming(c1, c2): 
     # returns the hamming distance between the genotypes of candidate solutions c1 and c2
     return sum([abs(c1.genotype[i] - c2.genotype[i]) for i in range(len( c1.genotype ))])
@@ -254,8 +269,8 @@ def evolve( max_iterations, pop_size, kt, geno_size,
         elif random_immigrant == 'cached':
             pop = diversify_cached_random_immigrant(pop, fitness_evaluator)
         elif random_immigrant == 'cached+criterion':
-            pop = diversify_cached_random_immigrant_with_criterion_HAMMING(pop, fitness_evaluator)
-            # the above can be changed to _PARETO
+            pop = diversify_cached_random_immigrant_with_criterion_FITNESS(pop, fitness_evaluator)
+            # the above can be changed to _PARETO _FITNESS _HAMMING
         elif random_immigrant != '':
             print('Unknown Random Immigrant Method')
             exit()
