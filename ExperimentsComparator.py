@@ -2,7 +2,7 @@ import sys
 import pickle
 import numpy
 from scipy.stats import mannwhitneyu, shapiro, ttest_ind
-import numpy
+#import numpy
 
 #f1_name = input('File #1 - name: ')
 #f2_name = input('File #2 - name: ')

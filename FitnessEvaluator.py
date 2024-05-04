@@ -23,7 +23,7 @@ class FitnessEvaluator(object):
             return self.fitness_cache[key], self.outcome_cache[key]
         else:
             self.cache_misses += 1
-            fitness_value, outcomes = self.fitness_function(genotype)
+            fitness_value, outcomes = self.fitness_function(list(key))
             self.fitness_cache[key] = fitness_value
             self.outcome_cache[key] = outcomes
             return fitness_value, outcomes

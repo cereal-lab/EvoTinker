@@ -27,7 +27,8 @@ def time_warp(seconds):
 
 if __name__ == '__main__':
         
-    
+    print('This is deprecated for now; it is not handling the plot data returned by evolve()')
+    exit()
     #for file uf20-04.cnf (hardcoded in FitnessSAT.py) 91 clauses, 20 variables (genolength)
     # number_of_trials = 25
     

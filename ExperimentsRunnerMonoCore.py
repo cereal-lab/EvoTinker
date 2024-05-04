@@ -46,6 +46,9 @@ if __name__ == '__main__':
     start_experiment = timeit.default_timer()
 
     #for i in track(range(number_of_trials), description='Experiments Running'):        
+    
+    MAX_ITERATIONS = 400_000
+    experiments_best_plot = [0.0 for _ in range(MAX_ITERATIONS)]
     for i in range(number_of_trials):        
         print(f"Run #{i}", end='\t')
         print(f"Started", end='\t', flush=True)
@@ -55,17 +58,17 @@ if __name__ == '__main__':
         #                     geno_size=100, # for uf100-04.cnf
         #                     #mutation_rate = 0.75,
         #                     #max_iterations=40_000, # for uf20-04.cnf
-        #                     max_iterations=400_000, # for uf100-04.cnf
+        #                     max_iterations=MAX_ITERATIONS, # for uf100-04.cnf
         #                     improve_method="by_reset",
         #                     #recombination=10,
         #                     fitness_evaluator=fitness_evaluator, 
         #                     experiment_number=i,
         #                     experiment_total=number_of_trials)
-        best, iteration, cache_hits, cache_misses  = evolve_ssga(       
+        best, iteration, cache_hits, cache_misses, best_plot  = evolve_ssga(       
                             geno_size=20, # for uf20-04.cnf
                             #geno_size=100, # for uf100-04.cnf
                             #geno_size=250, # for uf250-32.cnf
-                            max_iterations=400_000, 
+                            max_iterations=MAX_ITERATIONS, 
                             pop_size=25, # for uf20-04.cnf
                             #pop_size=50, # for uf100-04.cnf
                             kt=2, 
@@ -80,8 +83,13 @@ if __name__ == '__main__':
         stop_trial = timeit.default_timer()
         result = tuple([best, iteration, cache_hits, cache_misses])
         results += [result]
+        for i in range(MAX_ITERATIONS):
+            experiments_best_plot[i] += best_plot[i]
+
         print(f"DONE\t ({time_warp(stop_trial - start_trial)})")
     
+    for i in range(MAX_ITERATIONS):
+        experiments_best_plot[i] = experiments_best_plot[i] / number_of_trials
     stop_experiment = timeit.default_timer()
 
 
@@ -91,7 +99,8 @@ if __name__ == '__main__':
         with open(f'stat{stat}.pickle', 'wb') as f:
             pickle.dump(series,f)
 
-
+    with open(f'experiment_best_plot.pickle', 'wb') as f: 
+        pickle.dump(experiments_best_plot, f)
     print("Run duration =", time_warp(stop_experiment-start_experiment))
 
 

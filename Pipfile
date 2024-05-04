@@ -8,6 +8,7 @@ scipy = "*"
 numpy = "*"
 pep517 = "*"
 rich = "*"
+matplotlib = "*"
 
 [dev-packages]
 autopep8 = "*"

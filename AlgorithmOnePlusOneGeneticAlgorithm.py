@@ -102,15 +102,17 @@ def evolve( max_iterations, geno_size,
     # NOTE: TODO: Pick an iterator: 
     it = track(range(max_iterations), description=descript) # for interactive shells
     # it = range(max_iterations) # for background batch jobs
-    
+    experiment_plot_best = []
     for iteration in it:
         #print(iteration)
         cs = improve(cs, mutation_rate)
         if recombination is not None:
             cs = cached_recombination(cs, rate=1.0, kt_size=recombination)
-        if cs.fitness >= fitness_evaluator.max_fitness:
-            break
+        # NOTE deactivate for TDO environments
+        experiment_plot_best.append(cs.fitness)
+        #if cs.fitness >= fitness_evaluator.max_fitness:
+        #    break
     #print("------------")
     cache_usage = fitness_evaluator.report_cache_usage()
     fitness_evaluator.zero_cache_usage()
-    return (cs.fitness, iteration) + cache_usage
+    return (cs.fitness, iteration) + cache_usage + (experiment_plot_best,)
