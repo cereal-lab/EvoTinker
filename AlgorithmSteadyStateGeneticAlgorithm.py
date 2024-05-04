@@ -245,9 +245,12 @@ def evolve( max_iterations, pop_size, kt, geno_size,
     # it = range(max_iterations) # for background batch jobs
     threshold = max_iterations // 2
     experiment_plot_best = []
+    fitness_evaluator.reset_formula()
     for iteration in it:
         if iteration == threshold:
-            fitness_evaluator.set_dual_mode(True)
+            fitness_evaluator.next_formula()
+            for p in pop: 
+                p.evaluate()
 
         if pareto_select:
             p1,p2 = select_pareto(pop, 5)
@@ -274,7 +277,7 @@ def evolve( max_iterations, pop_size, kt, geno_size,
             pop = diversify_cached_random_immigrant(pop, fitness_evaluator)
         elif random_immigrant == 'cached+criterion':
             pop = diversify_cached_random_immigrant_with_criterion_FITNESS(pop, fitness_evaluator)
-            # the above can be changed to _PARETO _FITNESS _HAMMING
+            # NOTE the above can be changed to _PARETO _FITNESS _HAMMING
         elif random_immigrant != '':
             print('Unknown Random Immigrant Method')
             exit()

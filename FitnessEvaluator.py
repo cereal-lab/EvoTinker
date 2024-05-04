@@ -1,4 +1,6 @@
 from randomdict.randomdict import RandomDict
+import FitnessSAT 
+
 class FitnessEvaluator(object):
         
     def __init__(self, fitness_function, max_fitness):
@@ -9,14 +11,11 @@ class FitnessEvaluator(object):
         self.fitness_cache = RandomDict()
         self.outcome_cache = RandomDict()
         self.fitness_function = fitness_function
-        self.dual_mode = False
-            
+
+
     def evaluate(self, genotype):
         
-        if self.dual_mode: 
-            key = tuple([(1-genotype[i]) for i in range(len(genotype))])
-        else:
-            key = tuple(genotype)
+        key = tuple(genotype)
 
         if key in self.fitness_cache:
             self.cache_hits += 1
@@ -37,9 +36,17 @@ class FitnessEvaluator(object):
         self.fitness_cache.clear()
         self.outcome_cache.clear()
     
-    def set_dual_mode(self, value):
-        if value == True or value == False:
-            self.dual_mode = value
+    def invalidate_cache(self):
+        self.fitness_cache.clear()
+        self.outcome_cache.clear()
+
+    def reset_formula(self):
+        FitnessSAT.update_formula('uf20-04.cnf')
+
+    def next_formula(self):
+        FitnessSAT.update_formula('uf20-05.cnf')
+        self.invalidate_cache()
+                
 
 class DualFitnessEvaluator(FitnessEvaluator):
      def evaluate(self, genotype):

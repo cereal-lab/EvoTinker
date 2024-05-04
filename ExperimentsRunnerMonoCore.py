@@ -33,7 +33,8 @@ if __name__ == '__main__':
 
     #for file uf250-32.cnf (hardcoded in FitnessSAT.py) 1065 clauses, 250 variables
     number_of_trials = 32
-    
+    MAX_ITERATIONS = 100_000
+
     random.seed(422399)
     
     fitness_evaluator = FitnessEvaluator(FitnessSAT.evaluate_formula, FitnessSAT.MAX_FITNESS)
@@ -47,7 +48,7 @@ if __name__ == '__main__':
 
     #for i in track(range(number_of_trials), description='Experiments Running'):        
     
-    MAX_ITERATIONS = 400_000
+
     experiments_best_plot = [0.0 for _ in range(MAX_ITERATIONS)]
     for i in range(number_of_trials):        
         print(f"Run #{i}", end='\t')
