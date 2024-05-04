@@ -9,9 +9,15 @@ class FitnessEvaluator(object):
         self.fitness_cache = RandomDict()
         self.outcome_cache = RandomDict()
         self.fitness_function = fitness_function
+        self.dual_mode = False
             
     def evaluate(self, genotype):
-        key = tuple(genotype)
+        
+        if self.dual_mode: 
+            key = tuple([(1-genotype[i]) for i in range(len(genotype))])
+        else:
+            key = tuple(genotype)
+
         if key in self.fitness_cache:
             self.cache_hits += 1
             return self.fitness_cache[key], self.outcome_cache[key]
@@ -30,7 +36,10 @@ class FitnessEvaluator(object):
         self.cache_misses = 0
         self.fitness_cache.clear()
         self.outcome_cache.clear()
-
+    
+    def set_dual_mode(self, value):
+        if value == True or value == False:
+            self.dual_mode = value
 
 class DualFitnessEvaluator(FitnessEvaluator):
      def evaluate(self, genotype):

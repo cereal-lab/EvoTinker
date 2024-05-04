@@ -243,8 +243,11 @@ def evolve( max_iterations, pop_size, kt, geno_size,
     # NOTE: TODO: Pick an iterator: 
     it = track(range(max_iterations), description=descript) # for interactive shells
     # it = range(max_iterations) # for background batch jobs
-
+    threshold = max_iterations // 2
     for iteration in it:
+        if iteration == threshold:
+            fitness_evaluator.set_dual_mode(True)
+
         if pareto_select:
             p1,p2 = select_pareto(pop, 5)
         else:
@@ -279,8 +282,10 @@ def evolve( max_iterations, pop_size, kt, geno_size,
         pop = replace(pop, os2)
 
         best = max(pop, key=lambda item: item.fitness)
-        if best.fitness >= fitness_evaluator.max_fitness:
-            break
+        # NOTE we deactivate the breaking early if global optimum is found
+        # while we use time-dependent environments 
+        #if best.fitness >= fitness_evaluator.max_fitness:
+        #    break
 
     cache_usage = fitness_evaluator.report_cache_usage()
     fitness_evaluator.zero_cache_usage()
