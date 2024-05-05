@@ -19,14 +19,14 @@ with open(file_name2, 'rb') as f2:
 
 x = [i for i in range(len(file_series1))]
 
-plt.plot(x, file_series1)
-plt.plot(x, file_series2)
+plt.plot(x, file_series1, label='SSGA')
+plt.plot(x, file_series2, label='SSGA/RI')
 plt.title(f"Plotting average best fitness over number of iterations")
 plt.xlabel("Iteration Number")
 plt.ylabel(f"Best Fitness")
-plt.ylim(75,92)
-plt.xlim(49800, 50200)
-plt.legend(loc='lower right', bbox_to_anchor=(1, 1), labels=['SSGA','SSGA/RI'])
+plt.ylim(80,92)
+plt.xlim(49980, 50400)
+plt.legend(loc='lower right')#, labels=['SSGA','SSGA/RI'])
 plt.savefig('experiment_best_plot.png')
 plt.show()
 
