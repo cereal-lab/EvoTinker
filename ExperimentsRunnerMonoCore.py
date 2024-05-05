@@ -89,8 +89,20 @@ if __name__ == '__main__':
 
         print(f"DONE\t ({time_warp(stop_trial - start_trial)})")
     
+    # the average of all the best fitness averages at each iteration over all runs 
+    experiments_best_plot_average = 0.0
+    
+    #averaging the best fitness for every iteration over all the runs
     for i in range(MAX_ITERATIONS):
         experiments_best_plot[i] = experiments_best_plot[i] / number_of_trials
+        experiments_best_plot_average += experiments_best_plot[i]
+
+    # NOTE the number of the stat file is len(results[0]) 
+    # so, if we have 4 stats, it will come after stats0 to stats3
+    experiments_best_plot_average /= MAX_ITERATIONS
+    with open(f'stat{len(results[0])}.pickle', 'wb') as f: 
+        pickle.dump(experiments_best_plot, f)
+
     stop_experiment = timeit.default_timer()
 
 
@@ -100,8 +112,12 @@ if __name__ == '__main__':
         with open(f'stat{stat}.pickle', 'wb') as f:
             pickle.dump(series,f)
 
+    # NOTE same as stat[len(results[0])]
     with open(f'experiment_best_plot.pickle', 'wb') as f: 
         pickle.dump(experiments_best_plot, f)
+    
+    print(f'Average of all the best fitness at each iteration, over all runs: '
+          f'{experiments_best_plot_average}')
     print("Run duration =", time_warp(stop_experiment-start_experiment))
 
 
