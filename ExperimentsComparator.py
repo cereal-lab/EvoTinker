@@ -10,9 +10,9 @@ f1_core = sys.argv[1]
 f2_core = sys.argv[2]
 
 # NOTE: Update if return values from evolve change
-stats_names=['best', 'iteration', 'cache_hits', 'cache_misses']
+stats_names=['best (at end)', 'iteration', 'cache_hits', 'cache_misses', 'best (overall)']
 
-for i in range(4):
+for i in range(len(stats_names)):
     #root = 'Experiments Logs/'
     root = ''
     suffix = f'/stat{i}.pickle'
