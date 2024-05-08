@@ -11,11 +11,16 @@ class FitnessEvaluator(object):
         self.fitness_cache = RandomDict()
         self.outcome_cache = RandomDict()
         self.fitness_function = fitness_function
+        self.dual_mode = False # by defalt evaluate bits as is, if True, complement them
 
 
     def evaluate(self, genotype):
         
-        key = tuple(genotype)
+        # handle the dual_mode: 
+        if self.dual_mode == False: 
+            key = tuple(genotype)   # no dual_mode, we evaluate the genotypes
+        else:
+            key = tuple([1-v for v in genotype]) # dual_mode, complement genotype first
 
         if key in self.fitness_cache:
             self.cache_hits += 1
@@ -42,9 +47,14 @@ class FitnessEvaluator(object):
 
     def reset_formula(self):
         FitnessSAT.update_formula('uf20-04.cnf')
+        self.dual_mode = False
 
     def next_formula(self):
-        FitnessSAT.update_formula('uf20-05.cnf')
+        # called when switching environments for TDO
+        # pick one: either switch to a new file, or complement the encoding
+        # nothing wrong if picking both but that may be a bit overkill
+        FitnessSAT.update_formula('uf20-04.cnf') # Keep same file or switch to new one?
+        self.dual_mode = True # switch encoding
         self.invalidate_cache()
                 
 
