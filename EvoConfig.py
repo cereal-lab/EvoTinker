@@ -35,6 +35,6 @@ config = {
     'mutation_rate'             :   0.05,
 
     #local_search=True,
-    'random_immigrant'          :   '', #'original', #'cached' #'cached+criterion'
+    'random_immigrant'          :   'cached', #'original', #'cached' #'cached+criterion'
     'pareto_select'             :   False
 }
