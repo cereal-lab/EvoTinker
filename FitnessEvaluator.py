@@ -1,6 +1,6 @@
 from randomdict.randomdict import RandomDict
 import FitnessSAT 
-
+import EvoConfig
 class FitnessEvaluator(object):
         
     def __init__(self, fitness_function, max_fitness):
@@ -46,15 +46,15 @@ class FitnessEvaluator(object):
         self.outcome_cache.clear()
 
     def reset_formula(self):
-        FitnessSAT.update_formula('uf20-04.cnf')
+        FitnessSAT.update_formula(EvoConfig.config['SAT_instances'][0])
         self.dual_mode = False
 
-    def next_formula(self):
+    def next_formula(self, epoch=1):
         # called when switching environments for TDO
-        # pick one: either switch to a new file, or complement the encoding
-        # nothing wrong if picking both but that may be a bit overkill
-        FitnessSAT.update_formula('uf20-04.cnf') # Keep same file or switch to new one?
-        self.dual_mode = True # switch encoding
+        if EvoConfig.config['DOP_transition_alternate']: 
+            FitnessSAT.update_formula(EvoConfig.config['SAT_instances'][epoch]) 
+        if EvoConfig.config['DOP_transition_mirror']:
+            self.dual_mode = True # switch encoding
         self.invalidate_cache()
                 
 

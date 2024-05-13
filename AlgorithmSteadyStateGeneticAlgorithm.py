@@ -5,7 +5,7 @@ from CandidateSolution import CandidateSolution
 #----
 from rich.progress import track
 import time
-
+import EvoConfig
 
 
 
@@ -227,7 +227,8 @@ def evolve( max_iterations, pop_size, kt, geno_size,
             crossover_rate=None, 
             fitness_evaluator=None, 
             experiment_number=None,
-            experiment_total=None):    
+            number_of_trials=None, 
+            **kwargs):    
     pop = []
     for _ in range(pop_size):
         cs = CandidateSolution(geno_size, fitness_evaluator=fitness_evaluator)
@@ -235,20 +236,20 @@ def evolve( max_iterations, pop_size, kt, geno_size,
         pop.append(cs)
         
     best = max(pop, key=lambda item: item.fitness)
-    if experiment_number != None and experiment_total != None: 
-        descript = f'SSGA {experiment_number:3d} /{experiment_total:3d}'
+    if experiment_number != None and number_of_trials != None: 
+        descript = f'SSGA {experiment_number:3d} /{number_of_trials:3d}'
     else:
         descript = 'SSGA' 
 
     # NOTE: TODO: Pick an iterator: 
     it = track(range(max_iterations), description=descript) # for interactive shells
     # it = range(max_iterations) # for background batch jobs
-    threshold = max_iterations // 2
+    threshold = EvoConfig.config['DOP_epoch_duration']
     experiment_plot_best = []
     fitness_evaluator.reset_formula()
     for iteration in it:
-        if iteration == threshold:
-            fitness_evaluator.next_formula()
+        if iteration % threshold == 0:
+            fitness_evaluator.next_formula(iteration // threshold)
             for p in pop: 
                 p.evaluate()
 

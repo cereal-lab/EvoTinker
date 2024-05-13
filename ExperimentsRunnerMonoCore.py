@@ -8,6 +8,8 @@ import random
 import timeit
 import pickle
 
+import EvoConfig
+
 def OneMax(genotype):
     return sum(genotype)
 
@@ -25,15 +27,8 @@ def time_warp(seconds):
 
 if __name__ == '__main__':
         
-    #for file uf20-04.cnf (hardcoded in FitnessSAT.py) 91 clauses, 20 variables (genolength)
-    # number_of_trials = 25
-    
-    #for file uf100-04.cnf (hardcoded in FitnessSAT.py) 430 clauses, 100 variables
-    #number_of_trials = 32
-
-    #for file uf250-32.cnf (hardcoded in FitnessSAT.py) 1065 clauses, 250 variables
-    number_of_trials = 32
-    MAX_ITERATIONS = 100_000
+    MAX_TRIALS = EvoConfig.config['number_of_trials']
+    MAX_ITERATIONS = EvoConfig.config['max_iterations']
 
     random.seed(422399)
     
@@ -46,11 +41,8 @@ if __name__ == '__main__':
     results = []
     start_experiment = timeit.default_timer()
 
-    #for i in track(range(number_of_trials), description='Experiments Running'):        
-    
-
     experiments_best_plot = [0.0 for _ in range(MAX_ITERATIONS)]
-    for i in range(number_of_trials):        
+    for i in range(MAX_TRIALS):        
         print(f"Run #{i}", end='\t')
         print(f"Started", end='\t', flush=True)
         start_trial = timeit.default_timer()
@@ -66,21 +58,9 @@ if __name__ == '__main__':
         #                     experiment_number=i,
         #                     experiment_total=number_of_trials)
         best, iteration, cache_hits, cache_misses, best_plot  = evolve_ssga(       
-                            geno_size=20, # for uf20-04.cnf
-                            #geno_size=100, # for uf100-04.cnf
-                            #geno_size=250, # for uf250-32.cnf
-                            max_iterations=MAX_ITERATIONS, 
-                            pop_size=25, # for uf20-04.cnf
-                            #pop_size=50, # for uf100-04.cnf
-                            kt=2, 
-                            #local_search=True,
-                            crossover_rate=1.0, 
-                            #random_immigrant= 'original', #'cached' #'cached+criterion'
-                            #pareto_select=True,
-                            mutation_rate=0.05, 
-                            fitness_evaluator=fitness_evaluator, 
-                            experiment_number=i,
-                            experiment_total=number_of_trials)
+                            fitness_evaluator=fitness_evaluator,
+                            experiment_number=i, 
+                            **EvoConfig.config)
         stop_trial = timeit.default_timer()
         result = tuple([best, iteration, cache_hits, cache_misses])
         results += [result]
@@ -94,7 +74,7 @@ if __name__ == '__main__':
     
     #averaging the best fitness for every iteration over all the runs
     for i in range(MAX_ITERATIONS):
-        experiments_best_plot[i] = experiments_best_plot[i] / number_of_trials
+        experiments_best_plot[i] = experiments_best_plot[i] / MAX_TRIALS
         experiments_best_plot_average += experiments_best_plot[i]
 
     # NOTE the number of the stat file is len(results[0]) 

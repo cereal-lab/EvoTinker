@@ -1,6 +1,8 @@
 import random
 
 
+import EvoConfig
+
 formula = []
 
 
@@ -44,17 +46,8 @@ def evaluate_formula(genotype: list):
     return fitness, evaluation
 
 
-#91 clauses, 20 vars
-MAX_FITNESS = 91
-update_formula('uf20-04.cnf')
-
-#430 clauses, 100 vars
-#file1 = open('uf100-04.cnf', 'r')
-#MAX_FITNESS = 430
-
-#1065 clauses, 250 vars
-# file1 = open('uf250-032.cnf', 'r')
-# MAX_FITNESS = 1065
+MAX_FITNESS = EvoConfig.config['max_fitness']
+update_formula(EvoConfig.config['SAT_instances'][0])
 
 
 if __name__ == '__main__':
