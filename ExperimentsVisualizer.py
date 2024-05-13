@@ -3,7 +3,7 @@ import pickle
 import matplotlib.pyplot as plt
 
 file_core1 = sys.argv[1]
-if sys.arv[2]:
+if sys.argv[2]:
     file_core2 = sys.argv[2]
 
 #root = 'Experiments Logs/'
