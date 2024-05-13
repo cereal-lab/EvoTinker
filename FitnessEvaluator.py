@@ -54,7 +54,10 @@ class FitnessEvaluator(object):
         if EvoConfig.config['DOP_transition_alternate']: 
             FitnessSAT.update_formula(EvoConfig.config['SAT_instances'][epoch]) 
         if EvoConfig.config['DOP_transition_mirror']:
-            self.dual_mode = True # switch encoding
+            if epoch % 2 == 0: 
+                self.dual_mode = False
+            else: 
+                self.dual_mode = True # switch encoding
         self.invalidate_cache()
                 
 
