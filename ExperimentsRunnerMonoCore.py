@@ -1,6 +1,6 @@
 from FitnessEvaluator import FitnessEvaluator, DualFitnessEvaluator
 from AlgorithmSteadyStateGeneticAlgorithm import evolve as evolve_ssga
-from AlgorithmOnePlusOneGeneticAlgorithm import evolve as evolve_1plus1ga
+#from Deprecated.AlgorithmOnePlusOneGeneticAlgorithm import evolve as evolve_1plus1ga
 from scipy.stats import mannwhitneyu
 from scipy.stats import shapiro
 from scipy.stats import ttest_ind
